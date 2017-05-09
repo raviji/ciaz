@@ -1,0 +1,8 @@
+<div ng-controller="deviceCtrl">
+    <div class="status">
+        moves: <strong>{{puzzle.api.moves}}</strong><br/> solved: <strong>{{puzzle.api.isSolved()}}</strong>
+    </div>
+    <button ng-click="puzzle.api.solve()">solve</button>
+    <sliding-puzzle dbid="{{data.$id}}" class="device" api="puzzle.api" size="{{data.rows}}x{{data.cols}}" movement="{{data.moves.move}}" src="{{data.src}}" payload="{{data.payload}}">
+    </sliding-puzzle>
+</div>

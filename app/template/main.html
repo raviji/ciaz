@@ -1,0 +1,24 @@
+<div ng-controller="systemCtrl">
+    <table>
+        <tr>
+            <td algin="center" valign="middle">
+                <div class="status">
+                    moves: <strong>{{puzzle.api.moves}}</strong><br/> solved: <strong>{{puzzle.api.isSolved() }}</strong>
+
+                </div>
+                <button ng-click="puzzle.api.solve()">solve</button>
+                <button ng-click="onYouTubeIframeAPIReady()">solve</button>
+
+                <sliding-puzzle class="system" ng-if="data.$id" dbid="{{data.$id}}" api="puzzle.api" size="{{data.rows}}x{{data.cols}}" movement="{{data.moves.move}}" src="{{data.src}}" payload="{{data.payload}}"></sliding-puzzle>
+
+            </td>
+            <td>
+                <video id="myVideo" width="420">
+                    <source src="ciaz.mp4" type="video/mp4">
+                    Your browser does not support HTML5 video.
+                </video>
+                <button ng-click="playPause(puzzle.api.isSolved())">Play/Pause</button>
+            </td>
+        </tr>
+    </table>
+</div>
