@@ -1,6 +1,6 @@
 'use strict';
 
-var app = angular.module('puzzleApp', ['slidingPuzzle', 'firebase', 'ngRoute', 'swipe', 'ui.router']);
+var app = angular.module('puzzleApp', ['slidingPuzzle', 'firebase', 'ngRoute', 'swipe', 'ui.router', 'timer']);
 
 app.config(function($routeProvider, $stateProvider, $urlRouterProvider) {
     //$locationProvider.html5Mode(true).hashPrefix('*');
@@ -51,11 +51,18 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
 
 
     /*-------------- Random Array ---------*/
-    $scope.arr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
+    /*$scope.arr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
     $scope.arr.sort(function() {
         return .5 - Math.random();
-    });
+    });*/
 
+    $scope.arr = ["2,9,3,1,4,5,7,8,6", "4,1,2,9,5,3,7,8,6", "4,1,3,9,2,5,7,8,6", "1,2,3,7,4,6,5,9,8", "1,9,3,5,2,6,4,7,8"];
+    var pickAPayload = function() {
+        $scope.randOne = $scope.arr[Math.floor(Math.random() * $scope.arr.length)];
+        return $scope.randOne;
+    };
+
+    console.log(pickAPayload())
 
     //Check User Exist
     var ref = firebase.database().ref('puzzle');
@@ -80,7 +87,7 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
         var ref = firebase.database().ref('puzzle');
         $scope.loadgame = true;
         $scope.addUser.userId = $scope.user_Id;
-        $scope.addUser.payload = $scope.arr.toString();
+        $scope.addUser.payload = pickAPayload();
         $scope.addUser.moves.move = "2,1";
         $scope.addUser.rows = 3;
         $scope.addUser.cols = 3;

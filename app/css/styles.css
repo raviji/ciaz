@@ -34,6 +34,7 @@ ul {
 .sliding-puzzle {
     border: 1px solid #ccc;
     border-spacing: 0;
+    margin-bottom: 20px;
 }
 
 .sliding-puzzle td {
@@ -56,147 +57,11 @@ ul {
     background-color: #ddd !important;
 }
 
-
-/*.sliding-puzzle.puzzle-solved {
-    display: none;
-}*/
-
 .sliding-puzzle.puzzle-solved td {
     border: none;
 }
 
-
-/* Application */
-
-#types {
-    margin: 0 0 40px 0px;
-    padding: 10px;
-    list-style: none;
-    border-bottom: 1px solid #ddd;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: #f3f3f3;
-}
-
-#types li {
-    display: inline-block;
-    padding: 10px;
-    margin-right: 40px;
-}
-
-#types li a {
-    font-size: 22pt;
-    color: #999;
-}
-
-#types li.selected {
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 0 5px #999;
-    -webkit-box-shadow: 0 0 5px #999;
-    -moz-box-shadow: 0 0 5px #999;
-}
-
-#types li.selected a {
-    font-weight: bold;
-    color: black;
-    text-decoration: none;
-}
-
-#fork {
-    position: fixed;
-    top: 0;
-    right: 0;
-    display: block;
-    width: 149px;
-    height: 149px;
-    background: url('https://s3.amazonaws.com/github/ribbons/forkme_right_gray_6d6d6d.png') no-repeat;
-}
-
-#powered {
-    position: fixed;
-    right: 20px;
-    bottom: 15px;
-    display: block;
-}
-
-#powered img {
-    opacity: 0.4;
-    width: 200px;
-}
-
-#sliding-advanced>div {
-    float: left;
-    margin: 0 40px 0 0;
-    min-width: 300px;
-}
-
-#sliding-advanced .sliding-puzzle {
-    clear: both;
-    margin-top: 30px;
-}
-
-#sliding-advanced h2 {
-    margin: 0 0 10px 0;
-    font-weight: bold;
-}
-
-#sliding-advanced .status {
-    float: left;
-    width: 40%;
-    height: 50px;
-}
-
-#sliding-advanced .size {
-    float: right;
-    height: 50px;
-    text-align: right;
-}
-
-#sliding-advanced .src input {
-    width: 98%;
-    font-family: "Courier New";
-    margin-bottom: 4px;
-}
-
-#word-search {
-    position: relative;
-}
-
-#word-search .word-search-puzzle {
-    float: left;
-}
-
-#word-search .words {
-    list-style: none;
-    float: left;
-    margin: 4px 20px 0 0;
-}
-
-#word-search .words li {
-    font-size: 12px;
-    margin-bottom: 4px;
-    text-align: center;
-}
-
-#word-search .words .found {
-    color: #bbb;
-    text-decoration: line-through;
-    font-weight: normal
-}
-
-#word-search .status {
-    position: absolute;
-    left: 0;
-    top: 330px;
-    text-align: center;
-    width: 80px;
-    font-weight: bold;
-}
-
-.system {
+.holdingDiv {
     left: 50%;
     position: absolute;
     top: 30px;
@@ -240,4 +105,19 @@ ul {
 
 .show-puzzle {
     display: block;
+}
+
+.time-list {
+    margin: 5px 0;
+    padding: 0;
+}
+
+.time-list li {
+    list-style-type: none;
+    margin: 0 1px 0 0;
+    padding: 0;
+    display: inline;
+    background: #ccc;
+    border-bottom: 1px solid #ccc;
+    padding: 5px;
 }

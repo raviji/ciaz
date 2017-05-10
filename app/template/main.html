@@ -7,10 +7,32 @@
                     </div>
                     <button ng-click="puzzle.api.solve()">solve</button>
                     <button ng-click="onYouTubeIframeAPIReady()">solve</button>-->
+        <div class="holdingDiv">
+            <sliding-puzzle class="system" ng-if="data.$id" dbid="{{data.$id}}" api="puzzle.api" size="{{data.rows}}x{{data.cols}}" movement="{{data.moves.move}}" src="{{data.src}}" payload="{{data.payload}}"></sliding-puzzle>
 
-        <sliding-puzzle class="system" ng-if="data.$id" dbid="{{data.$id}}" api="puzzle.api" size="{{data.rows}}x{{data.cols}}" movement="{{data.moves.move}}" src="{{data.src}}" payload="{{data.payload}}"></sliding-puzzle>
-
-
+            <table>
+                <tr>
+                    <td width="60" align="left">Moves: </td>
+                    <td align="left">
+                        <ul class="time-list">
+                            <li>{{puzzle.api.moves}}</li>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="60" align="left">Time: </td>
+                    <td align="left">
+                        <timer interval="1000">
+                            <ul class="time-list">
+                                <li>{{hours}} hr{{hoursS}}</li>
+                                <li>{{minutes}} min{{minutesS}}</li>
+                                <li>{{seconds}} sec{{secondsS}}</li>
+                            </ul>
+                        </timer>
+                    </td>
+                </tr>
+            </table>
+        </div>
 
         <video id="myVideo" ng-if="puzzle.api.isSolved()">
                     <source src="ciaz.mp4" type="video/mp4">
@@ -21,3 +43,11 @@
     <button ng-click="playPause(puzzle.api.isSolved())">Play/Pause</button>
     <button ng-click="puzzle.api.solve()">solve</button> moves: <strong>{{puzzle.api.moves}}</strong><br/> solved: <strong>{{puzzle.api.isSolved() }}</strong>
 </div>
+
+<!--
+1. Random for 5 step and 8-10 step
+2. facebook setup
+3. facebook share
+4. touch and swipe
+5. testing in live
+-->
