@@ -1,6 +1,6 @@
 'use strict';
 
-var app = angular.module('puzzleApp', ['slidingPuzzle', 'firebase', 'ngRoute', 'swipe', 'ui.router']);
+var app = angular.module('puzzleApp', ['slidingPuzzle', 'firebase', 'ngRoute', 'swipe', 'ui.router','ja.qr']);
 
 app.config(function($routeProvider, $stateProvider, $urlRouterProvider) {
     //$locationProvider.html5Mode(true).hashPrefix('*');
@@ -28,13 +28,19 @@ app.run(function($firebaseArray, $firebaseObject) {
     var defaultApp = firebase.initializeApp(config);
 });
 
-app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, slidingPuzzle) {
+
+
+app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, slidingPuzzle,$timeout) {
 
     $scope.loadgame = false;
-    $scope.user_Id = "raviabc1";
+    $scope.user_Id = "navya";
     $scope.puzzle = {};
     $scope.addUser = [];
     $scope.addUser.moves = {};
+    $timeout(function(){
+        $scope.fakeDelay = false;
+    },1000)
+
 
     /**
      * Youtube video
@@ -49,7 +55,7 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
     }
 
 
-
+   // $scope.string = 'http://10.10.1.183/ciaz/app/#!/device?id=-Kjg0BHhbUFyQ7pevMI0&user_Id=navya';
     /*-------------- Random Array ---------*/
     $scope.arr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
     $scope.arr.sort(function() {
@@ -101,6 +107,7 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
             $scope.url = "puzzle/" + id;
             var ref = firebase.database().ref($scope.url);
             var obj = $firebaseObject(ref);
+            $scope.qrCodeUrl = "http://10.10.1.183/ciaz/app/#!/device?id="+ id+"&user_Id="+$scope.user_Id;
             obj.$loaded().then(function() {
                 //console.log(obj)
                 $scope.puzzle.payload = obj.payload;
@@ -112,6 +119,15 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
             });
             obj.$bindTo($scope, "data");
         };
+    }
+
+    $scope.challenge = function(){
+        $scope.fakeDelay = true;
+    }
+    /*QR code Challenge button functionlity*/
+    $scope.challengeStarted = false;
+    $scope.playNowSystem = function(){
+        $scope.challengeStarted = true;
     }
 
 });
@@ -128,6 +144,11 @@ app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject) {
         return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
 
+    $scope.showBtn = false;
+   $scope.PlayNow = function(){
+        $scope.showBtn= true;
+    }
+
     $scope.user_Id = getParameterByName("user_Id");
     $scope.id = getParameterByName("id");
 
@@ -137,7 +158,8 @@ app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject) {
         var ref = firebase.database().ref($scope.url);
         var obj = $firebaseObject(ref);
         obj.$loaded().then(function() {
-            console.log(obj)
+            //console.log(obj);
+            //$scope.test = true;
             $scope.puzzle.payload = obj.payload;
             $scope.puzzle.src = obj.src;
             $scope.puzzle.title = obj.title;

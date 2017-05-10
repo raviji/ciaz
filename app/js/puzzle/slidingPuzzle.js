@@ -153,6 +153,7 @@
                     }
                 }
                 return true;
+
             };
 
             /**
@@ -254,7 +255,7 @@
                 }
 
                 scope.$watch('movement', function(movement) {
-                    if (angular.isDefined(scope.puzzle.isSolved())) {
+                   /* if (angular.isDefined(scope.puzzle.isSolved())) {
                         if (scope.puzzle.isSolved()) {
                             $(".system").fadeOut('slow');
                             var myVideo = document.getElementById("myVideo");
@@ -264,7 +265,9 @@
                                 myVideo.pause();
                         }
 
-                    }
+                    }*/
+
+
                     if (angular.isDefined(scope.puzzle)) {
                         var arr = movement.split(',');
                         scope.puzzle.moveImage(arr[0], arr[1]);

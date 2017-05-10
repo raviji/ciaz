@@ -1,5 +1,5 @@
 <div ng-controller="systemCtrl">
-    <div class="systemPuzzle">
+    <div class="systemPuzzle" ng-show="challengeStarted">
 
         <!--<div class="status">
                         moves: <strong>{{puzzle.api.moves}}</strong><br/> solved: <strong>{{puzzle.api.isSolved() }}</strong>
@@ -7,17 +7,32 @@
                     </div>
                     <button ng-click="puzzle.api.solve()">solve</button>
                     <button ng-click="onYouTubeIframeAPIReady()">solve</button>-->
-
+        <div ng-show="!puzzle.api.isSolved()">
         <sliding-puzzle class="system" ng-if="data.$id" dbid="{{data.$id}}" api="puzzle.api" size="{{data.rows}}x{{data.cols}}" movement="{{data.moves.move}}" src="{{data.src}}" payload="{{data.payload}}"></sliding-puzzle>
+        </div>
 
 
-
-        <video id="myVideo" ng-if="puzzle.api.isSolved()">
-                    <source src="ciaz.mp4" type="video/mp4">
+        <video id="myVideo" ng-if="puzzle.api.isSolved()" autoplay>
+                    <source src="ciaz.mp4" type="video/mp4" >
                     Your browser does not support HTML5 video.
                 </video><br>
 
     </div>
     <button ng-click="playPause(puzzle.api.isSolved())">Play/Pause</button>
     <button ng-click="puzzle.api.solve()">solve</button> moves: <strong>{{puzzle.api.moves}}</strong><br/> solved: <strong>{{puzzle.api.isSolved() }}</strong>
+
+
+    <div ng-if="fakeDelay">
+        <div style="padding: 20px" ng-show="!challengeStarted">
+            <qr text="qrCodeUrl"></qr>
+            <button ng-click="playNowSystem()">PlayNow</button>
+            <!--<qr type-number="8" correction-level="'M'" size="200" input-mode="'ALPHA_NUM'" text="string" image="true"></qr>-->
+        </div>
+    </div>
+
+    <div ng-if="!fakeDelay">
+        <button ng-click="challenge()">ChallengeNow</button>
+    </div>
+
+
 </div>
