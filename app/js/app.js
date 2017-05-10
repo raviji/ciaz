@@ -28,8 +28,6 @@ app.run(function($firebaseArray, $firebaseObject) {
     var defaultApp = firebase.initializeApp(config);
 });
 
-
-
 app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, slidingPuzzle) {
 
     $scope.loadgame = false;
@@ -120,7 +118,8 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
 
 app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject) {
     function getParameterByName(name, url) {
-        if (!url) url = window.location.href;
+        if (!url)
+            url = window.location.href;
         name = name.replace(/[\[\]]/g, "\\$&");
         var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
             results = regex.exec(url);

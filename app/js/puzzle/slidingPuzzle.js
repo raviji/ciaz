@@ -26,7 +26,7 @@
             };
 
             this.getFBid = function(dbid) {
-                console.log(dbid)
+                //console.log(dbid)
                 this.dbid = dbid;
             }
 
@@ -38,9 +38,9 @@
                     if (srow != NaN && scol != NaN) {
                         obj.move = srow + "," + scol + "";
                         obj.$save().then(function(ref) {
-                            console.log("moved")
+                            //console.log("moved")
                         }, function(error) {
-                            console.log("Error:", error);
+                            //console.log("Error:", error);
                         });
                     }
                 }
@@ -254,7 +254,17 @@
                 }
 
                 scope.$watch('movement', function(movement) {
+                    if (angular.isDefined(scope.puzzle.isSolved())) {
+                        if (scope.puzzle.isSolved()) {
+                            $(".system").fadeOut('slow');
+                            var myVideo = document.getElementById("myVideo");
+                            if (myVideo.paused)
+                                myVideo.play();
+                            else
+                                myVideo.pause();
+                        }
 
+                    }
                     if (angular.isDefined(scope.puzzle)) {
                         var arr = movement.split(',');
                         scope.puzzle.moveImage(arr[0], arr[1]);
