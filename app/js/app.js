@@ -82,7 +82,7 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
         $scope.loadgame = true;
         $scope.addUser.userId = $scope.user_Id;
         $scope.addUser.payload = pickAPayload();
-        $scope.addUser.moves.move = "2,1";
+        $scope.addUser.moves.move = "";
         $scope.addUser.rows = 3;
         $scope.addUser.cols = 3;
         $scope.addUser.src = "./img/ciaz.png";
