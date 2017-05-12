@@ -190,3 +190,21 @@ ul {
     width: 130px;
     height: 130px;
 }
+
+.device-play {
+    background: url("../img/mobile/challange_now.png") no-repeat;
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+}
+
+.device-play a {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    margin-left: -25vw;
+}
+
+.device-play a img {
+    width: 25vw;
+}

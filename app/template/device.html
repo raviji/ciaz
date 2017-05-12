@@ -1,13 +1,16 @@
-<div ng-controller="deviceCtrl">
-    <div class="status">
+<div ng-controller="deviceCtrl" class="container">
+    <div class="device-play">
+        <a ng-click="PlayNow()"><img src="img/mobile/btn_play_now.png" title="Button"></a>
+    </div>
+    <!--<div class="status">
         moves: <strong>{{puzzle.api.moves}}</strong><br/> solved: <strong>{{puzzle.api.isSolved()}}</strong>
     </div>
-    <button ng-click="puzzle.api.solve()">solve</button>
+    <button ng-click="puzzle.api.solve()">solve</button>-->
     <div ng-show="showBtn">
         <sliding-puzzle dbid="{{data.$id}}" class="device" api="puzzle.api" size="{{data.rows}}x{{data.cols}}" movement="{{data.moves.move}}" src="{{data.src}}" payload="{{data.payload}}">
         </sliding-puzzle>
     </div>
-    <div ng-show="!showBtn">
+    <!--<div ng-show="!showBtn">
         <button ng-click="PlayNow()">PlayNow</button>
-    </div>
+    </div>-->
 </div>

@@ -147,6 +147,7 @@ app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject) {
 
     $scope.showBtn = false;
     $scope.PlayNow = function() {
+        $(".device-play").hide();
         $scope.showBtn = true;
     }
 
