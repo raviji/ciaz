@@ -40,12 +40,14 @@
 
 
 
+        <div id="myVideo" ng-if="puzzle.api.isSolved()">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/SnbdEYW0q2w?autoplay=1&cc_load_policy=1" frameborder="0" allowfullscreen></iframe>
+        </div>
 
-
-        <video id="myVideo" ng-if="puzzle.api.isSolved()" autoplay>
+       <!-- <video id="myVideo" ng-if="puzzle.api.isSolved()" autoplay>
                     <source src="ciaz.mp4" type="video/mp4" >
                     Your browser does not support HTML5 video.
-                </video><br>
+                </video><br>-->
 
     </div>
     <!--<button ng-click="playPause(puzzle.api.isSolved())">Play/Pause</button>
