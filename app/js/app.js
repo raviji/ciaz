@@ -33,7 +33,7 @@ app.run(function($firebaseArray, $firebaseObject) {
 app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, slidingPuzzle, $timeout) {
 
     $scope.loadgame = false;
-    $scope.user_Id = "navya";
+    $scope.user_Id = "raviabc";
     $scope.puzzle = {};
     $scope.addUser = [];
     $scope.addUser.moves = {};
@@ -41,7 +41,8 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
         $scope.fakeDelay = false;
     }, 1000)
 
-
+    $('.make_qrcode').hide();
+    $('.playgame').hide();
 
     // $scope.string = 'http://10.10.1.183/ciaz/app/#!/device?id=-Kjg0BHhbUFyQ7pevMI0&user_Id=navya';
     /*-------------- Random Array ---------*/
@@ -73,10 +74,10 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
     });
 
     $scope.existUser = function(id, user) {
-            //window.location.href = "#!/device?id=" + id + "&user_Id=" + user;
-            $scope.generateGameInSystem(id)
-        }
-        /*-------------- Add and Get data to Database ---------*/
+        //window.location.href = "#!/device?id=" + id + "&user_Id=" + user;
+        $scope.generateGameInSystem(id)
+    }
+    /*-------------- Add and Get data to Database ---------*/
     $scope.createUser = function() {
         var ref = firebase.database().ref('puzzle');
         $scope.loadgame = true;
@@ -85,12 +86,12 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
         $scope.addUser.moves.move = "";
         $scope.addUser.rows = 3;
         $scope.addUser.cols = 3;
-        $scope.addUser.src = "./img/ciaz.png";
+        $scope.addUser.src = "./img/puzzle.png";
         var list = $firebaseArray(ref);
         list.$add($scope.addUser).then(function(ref) {
             $scope.id = ref.path.o[1];
             window.location.href = "#!/device?id=" + $scope.id + "&user_Id=" + $scope.user_Id;
-            $scope.generateGameInSystem($scope.id)
+            $scope.generateGameInSystem($scope.id);
         });
     };
 
@@ -113,15 +114,20 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
                 $scope.puzzle.move = obj.moves;
             });
             obj.$bindTo($scope, "data");
-        };
+        }
+        ;
     }
 
     $scope.challenge = function() {
-            $scope.fakeDelay = true;
-        }
-        /*QR code Challenge button functionlity*/
+        $('.challange_dt').hide();
+        $('.make_qrcode').show();
+        $scope.fakeDelay = true;
+    }
+    /*QR code Challenge button functionlity*/
     $scope.challengeStarted = false;
     $scope.playNowSystem = function() {
+        $('.make_qrcode').hide();
+        $('.playgame').show();
         $scope.challengeStarted = true;
     }
 
@@ -170,6 +176,7 @@ app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject) {
         setTimeout(function() {
             $('.device.sliding-puzzle td ').height(fh + "px");
         }, 2000);
-    };
+    }
+    ;
 
 });
