@@ -1,8 +1,9 @@
 'use strict';
 
-var app = angular.module('puzzleApp', ['slidingPuzzle', 'firebase', 'ngRoute', 'swipe', 'ui.router', 'timer', 'ja.qr']);
+var app = angular.module('puzzleApp', ['slidingPuzzle', 'firebase', 'ngRoute', 'swipe', 'ui.router', 'timer', 'ja.qr', 'ngFacebook']);
 
 app.config(function($routeProvider, $stateProvider, $urlRouterProvider) {
+
     //$locationProvider.html5Mode(true).hashPrefix('*');
     $urlRouterProvider.otherwise('/');
     $stateProvider
@@ -28,9 +29,54 @@ app.run(function($firebaseArray, $firebaseObject) {
     var defaultApp = firebase.initializeApp(config);
 });
 
+app.config(function($facebookProvider) {
+    $facebookProvider.setAppId('1351080128304970');
+})
 
+app.run(function($rootScope) {
+    // Load the facebook SDK asynchronously
+    (function() {
+        // If we've already installed the SDK, we're done
+        if (document.getElementById('facebook-jssdk')) {
+            return;
+        }
 
-app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, slidingPuzzle, $timeout) {
+        // Get the first script element, which we'll use to find the parent node
+        var firstScriptElement = document.getElementsByTagName('script')[0];
+
+        // Create a new script element and set its id
+        var facebookJS = document.createElement('script');
+        facebookJS.id = 'facebook-jssdk';
+
+        // Set the new script's source to the source of the Facebook JS SDK
+        facebookJS.src = '//connect.facebook.net/en_US/all.js';
+
+        // Insert the Facebook JS SDK into the DOM
+        firstScriptElement.parentNode.insertBefore(facebookJS, firstScriptElement);
+    }());
+});
+
+app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, slidingPuzzle, $timeout, $window, $facebook) {
+
+    $scope.isLoggedIn = false;
+    $scope.login = function() {
+        $facebook.login().then(function() {
+            refresh();
+        });
+    }
+
+    function refresh() {
+        $facebook.api("/me").then(
+            function(response) {
+                $scope.welcomeMsg = "Welcome " + response.name;
+                $scope.isLoggedIn = true;
+            },
+            function(err) {
+                $scope.welcomeMsg = "Please log in";
+            });
+    }
+
+    refresh();
 
     $scope.loadgame = false;
     $scope.user_Id = "raviabc";
@@ -74,10 +120,10 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
     });
 
     $scope.existUser = function(id, user) {
-        //window.location.href = "#!/device?id=" + id + "&user_Id=" + user;
-        $scope.generateGameInSystem(id)
-    }
-    /*-------------- Add and Get data to Database ---------*/
+            //window.location.href = "#!/device?id=" + id + "&user_Id=" + user;
+            $scope.generateGameInSystem(id)
+        }
+        /*-------------- Add and Get data to Database ---------*/
     $scope.createUser = function() {
         var ref = firebase.database().ref('puzzle');
         $scope.loadgame = true;
@@ -103,7 +149,7 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
             $scope.url = "puzzle/" + id;
             var ref = firebase.database().ref($scope.url);
             var obj = $firebaseObject(ref);
-            $scope.qrCodeUrl = "http://10.10.1.183/ciaz/app/#!/device?id=" + id + "&user_Id=" + $scope.user_Id +"&flag=true" ;
+            $scope.qrCodeUrl = "http://10.10.1.183/ciaz/app/#!/device?id=" + id + "&user_Id=" + $scope.user_Id + "&flag=true";
             obj.$loaded().then(function() {
                 //console.log(obj)
                 $scope.puzzle.payload = obj.payload;
@@ -115,16 +161,15 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
             });
             obj.$bindTo($scope, "data");
             $scope.showChallengeBtn = true;
-        }
-        ;
+        };
     }
 
     $scope.challenge = function() {
-        $('.challange_dt').hide();
-        $('.make_qrcode').show();
-        $scope.fakeDelay = true;
-    }
-    /*QR code Challenge button functionlity*/
+            $('.challange_dt').hide();
+            $('.make_qrcode').show();
+            $scope.fakeDelay = true;
+        }
+        /*QR code Challenge button functionlity*/
     $scope.challengeStarted = false;
     $scope.playNowSystem = function() {
         $('.make_qrcode').hide();
@@ -134,14 +179,15 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
 
 });
 
-app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject,$location) {
-   console.log( $location.search());
+app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $location) {
+    console.log($location.search());
     $scope.QRFlag = $location.search().flag;
     console.log($scope.QRFlag);
-    if($scope.QRFlag == undefined){
+    if ($scope.QRFlag == undefined) {
         $scope.QRFlag = false;
         $('.device-play').hide();
     }
+
     function getParameterByName(name, url) {
         if (!url)
             url = window.location.href;
@@ -182,11 +228,11 @@ app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject,$l
         var h = $(window).height() - 20;
         var fh = h / 3;
 
-        $scope.deviceChallenge = function(){
+        $scope.deviceChallenge = function() {
             $(".device-challenge").hide();
             $(".device-play").show();
         }
-        $scope.qrCodePlayNow = function(){
+        $scope.qrCodePlayNow = function() {
             $(".device-play").hide();
             $scope.showBtn = true;
         }
@@ -194,7 +240,6 @@ app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject,$l
         setTimeout(function() {
             $('.device.sliding-puzzle td ').height(fh + "px");
         }, 2000);
-    }
-    ;
+    };
 
 });
