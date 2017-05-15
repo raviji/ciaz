@@ -107,11 +107,17 @@ ul {
 }
 
 #myVideo {
-    width: 476px;
+    /*width: 476px;
     left: 46%;
     position: absolute;
     top: 25%;
     margin-left: -240px;
+    z-index: 50;*/
+    width: 476px;
+    left: 9vw;
+    position: absolute;
+    top: 10vw;
+    margin-left: 0;
     z-index: 50;
 }
 #myMobileVideo{
@@ -154,16 +160,17 @@ ul {
 .challange_dt {
     background: url("../img/desktop/challange.png") no-repeat;
     min-height: 625px;
-    background-size: contain;
+    background-size: 100% 100%;
     position: relative;
+    width: 100%;
+    height: 100vh;
 }
 
 .challange_dt a {
     position: absolute;
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    margin-left: -100px;
+    bottom: 6vh;
+    left: 23vw;
+    margin-left: 0;
 }
 
 .challange_dt a img {
@@ -173,8 +180,9 @@ ul {
 .make_qrcode {
     background: url("../img/desktop/qrcode.png") no-repeat;
     min-height: 625px;
-    background-size: contain;
+    background-size: 100% 100%;
     position: relative;
+    height: 100vh;
 }
 
 .make_qrcode a {
@@ -190,20 +198,21 @@ ul {
 
 .make_qrcode qr {
     position: absolute;
-    right: 413px;
-    top: 135px;
+    right: 16.8vw;
+    top: 14vw;
     z-index: 100;
 }
 
 .make_qrcode qr canvas {
-    width: 130px;
-    height: 130px;
+    width: 125px;
+    height: 125px;
 }
 .desktopVideo{
     background: url("../img/desktop/thank-you.png") no-repeat;
     min-height: 625px;
-    background-size: contain;
+    background-size: 100% 100%;
     position: relative;
+    height: 100vh;
 }
 .mobileVideo{
     background: url("../img/desktop/thank-you.png") no-repeat;
@@ -216,7 +225,7 @@ ul {
     height: 100vh;
     width: 100%;
     position: relative;
-    background-size: 100%;
+    background-size: 100% 100%;
 }
 .device-challenge a {
     position: absolute;
@@ -245,7 +254,13 @@ ul {
 .device-play a img {
     width: 25vw;
 }
-
+.container-fluid{
+    padding: 0;
+}
+.flexWidth{
+    width: 820px !important;
+    margin:0 auto;
+}
 @media(min-width: 320px) and (max-width: 767px){
     .container {
         width: 100% !important;
