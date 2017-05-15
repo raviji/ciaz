@@ -158,17 +158,16 @@ ul {
 */
 
 .challange_dt {
-    background: url("../img/desktop/challange.png") no-repeat;
-    min-height: 625px;
+    background: url("../img/desktop/challange_820.png") no-repeat;
     background-size: 100% 100%;
     position: relative;
     width: 100%;
-    height: 100vh;
+    height: 461px;
 }
 
 .challange_dt a {
     position: absolute;
-    bottom: 6vh;
+    bottom: 3vh;
     left: 23vw;
     margin-left: 0;
 }
@@ -179,10 +178,10 @@ ul {
 
 .make_qrcode {
     background: url("../img/desktop/qrcode_820.png") no-repeat;
-    min-height: 625px;
+/*    min-height: 625px;*/
     background-size: 100% 100%;
     position: relative;
-    height: 100vh;
+    height: 523px;
 }
 
 .make_qrcode a {
@@ -199,7 +198,7 @@ ul {
 .make_qrcode qr {
     position: absolute;
     right: 16.8vw;
-    top: 14vw;
+    top: 11vw;
     z-index: 100;
 }
 
@@ -208,11 +207,11 @@ ul {
     height: 125px;
 }
 .desktopVideo{
-    background: url("../img/desktop/thank-you.png") no-repeat;
-    min-height: 625px;
+    background: url("../img/desktop/thank-you_820.png") no-repeat;
+   /* min-height: 625px;*/
     background-size: 100% 100%;
     position: relative;
-    height: 100vh;
+    height: 523px;
 }
 .mobileVideo{
     background: url("../img/desktop/thank-you.png") no-repeat;
