@@ -132,7 +132,7 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
         $scope.addUser.moves.move = "";
         $scope.addUser.rows = 3;
         $scope.addUser.cols = 3;
-        $scope.addUser.src = "./img/puzzle.png";
+        $scope.addUser.src = "./img/desktop/puzzle_820.png";
         var list = $firebaseArray(ref);
         list.$add($scope.addUser).then(function(ref) {
             $scope.id = ref.path.o[1];

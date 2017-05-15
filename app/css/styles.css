@@ -120,7 +120,8 @@ ul {
     margin-left: 0;
     z-index: 50;
 }
-#myMobileVideo{
+
+#myMobileVideo {
     width: 476px;
     left: 45%;
     position: absolute;
@@ -167,18 +168,18 @@ ul {
 
 .challange_dt a {
     position: absolute;
-    bottom: 3vh;
-    left: 23vw;
-    margin-left: 0;
+    bottom: 10px;
+    left: 50%;
+    margin-left: -5vw;
 }
 
 .challange_dt a img {
-    width: 12vw;
+    width: 10vw;
 }
 
 .make_qrcode {
     background: url("../img/desktop/qrcode_820.png") no-repeat;
-/*    min-height: 625px;*/
+    /*    min-height: 625px;*/
     background-size: 100% 100%;
     position: relative;
     height: 523px;
@@ -197,8 +198,8 @@ ul {
 
 .make_qrcode qr {
     position: absolute;
-    right: 16.8vw;
-    top: 11vw;
+    right: 228px;
+    top: 150px;
     z-index: 100;
 }
 
@@ -206,32 +207,37 @@ ul {
     width: 125px;
     height: 125px;
 }
-.desktopVideo{
+
+.desktopVideo {
     background: url("../img/desktop/thank-you_820.png") no-repeat;
-   /* min-height: 625px;*/
+    /* min-height: 625px;*/
     background-size: 100% 100%;
     position: relative;
     height: 523px;
 }
-.mobileVideo{
+
+.mobileVideo {
     background: url("../img/desktop/thank-you.png") no-repeat;
     min-height: 625px;
     background-size: contain;
     position: relative;
 }
-.device-challenge{
+
+.device-challenge {
     background: url("../img/mobile/challange%20mobile.png") no-repeat;
     height: 100vh;
     width: 100%;
     position: relative;
     background-size: 100% 100%;
 }
+
 .device-challenge a {
     position: absolute;
     bottom: 30px;
     left: 50%;
     margin-left: -25vw;
 }
+
 .device-challenge a img {
     width: 25vw;
 }
@@ -253,14 +259,17 @@ ul {
 .device-play a img {
     width: 25vw;
 }
-.container-fluid{
+
+.container-fluid {
     padding: 0;
 }
-.flexWidth{
+
+.flexWidth {
     width: 820px !important;
-    margin:0 auto;
+    margin: 0 auto;
 }
-@media(min-width: 320px) and (max-width: 767px){
+
+@media(min-width: 320px) and (max-width: 767px) {
     .container {
         width: 100% !important;
         padding: 0;
@@ -282,7 +291,7 @@ ul {
         margin: 0 auto;
     }
     .device-challenge a img,
-    .device-play a img{
+    .device-play a img {
         width: 100%;
     }
     .device-play {
@@ -292,7 +301,7 @@ ul {
         position: relative;
         background-size: 100% 100%;
     }
-    .device{
+    .device {
         height: 100vh;
         margin: 0;
     }
@@ -313,9 +322,8 @@ ul {
         z-index: 50;
         margin: 0 auto;
     }
-    #myMobileVideo iframe{
+    #myMobileVideo iframe {
         height: 100%;
         width: 100%;
     }
 }
-
