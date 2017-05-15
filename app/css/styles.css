@@ -178,7 +178,7 @@ ul {
 }
 
 .make_qrcode {
-    background: url("../img/desktop/qrcode.png") no-repeat;
+    background: url("../img/desktop/qrcode_820.png") no-repeat;
     min-height: 625px;
     background-size: 100% 100%;
     position: relative;
