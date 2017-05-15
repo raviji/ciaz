@@ -231,3 +231,78 @@ ul {
 .device-play a img {
     width: 25vw;
 }
+
+.mobileVideo{
+background: url("../img/desktop/thank-you.png") no-repeat;
+min-height: 625px;
+background-size: contain;
+position: relative;
+}
+#myMobileVideo{
+width: 476px;
+left: 45%;
+position: absolute;
+top: 16%;
+margin-left: -240px;
+z-index: 50;
+}
+
+@media(min-width: 320px) and (max-width: 767px){
+    .container {
+        width: 100% !important;
+        padding: 0;
+    }
+    .device-challenge {
+        background: url(../img/mobile/challange%20mobile.png) no-repeat;
+        height: 100vh;
+        width: 100%;
+        position: relative;
+        background-size: 100% 100%;
+    }
+    .device-challenge a,
+    .device-play a {
+        position: absolute;
+        bottom: 30px;
+        left: 0;
+        right: 0;
+        width: 75%;
+        margin: 0 auto;
+    }
+    .device-challenge a img,
+    .device-play a img{
+        width: 100%;
+    }
+    .device-play {
+        background: url(../img/mobile/challange_now.png) no-repeat;
+        height: 100vh;
+        width: 100%;
+        position: relative;
+        background-size: 100% 100%;
+    }
+    .device{
+        height: 100vh;
+        margin: 0;
+    }
+    .mobileVideo {
+        background: url(../img/desktop/thank-you.png) no-repeat;
+        min-height: 625px;
+        background-size: 100% 100%;
+        position: relative;
+        height: 100vh;
+        width: 100%;
+    }
+    #myMobileVideo {
+        width: 80%;
+        left: 10vw;
+        position: absolute;
+        top: 38%;
+        margin-left: 0;
+        z-index: 50;
+        margin: 0 auto;
+    }
+    #myMobileVideo iframe{
+        height: 100%;
+        width: 100%;
+    }
+}
+

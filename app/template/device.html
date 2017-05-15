@@ -10,8 +10,15 @@
     </div>
     <button ng-click="puzzle.api.solve()">solve</button>-->
     <div ng-show="showBtn">
+        <div ng-show="!puzzle.api.isSolved()">
         <sliding-puzzle dbid="{{data.$id}}" class="device" api="puzzle.api" size="{{data.rows}}x{{data.cols}}" movement="{{data.moves.move}}" src="{{data.src}}" payload="{{data.payload}}">
         </sliding-puzzle>
+        </div>
+    </div>
+    <div class="mobileVideo" ng-if="puzzle.api.isSolved()">
+      <div id="myMobileVideo">
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/SnbdEYW0q2w?autoplay=1&cc_load_policy=1" frameborder="0" allowfullscreen></iframe>
+      </div>
     </div>
     <!--<div ng-show="!showBtn">
         <button ng-click="PlayNow()">PlayNow</button>
