@@ -1,6 +1,6 @@
 <div ng-controller="systemCtrl" class="container">
     <div class="challange_dt" ng-if="!fakeDelay">
-        <a href="#" ng-click="challenge()"><img src="img/desktop/btn_challenge.png" title="Button"></a>
+        <a href="#" ng-click="challenge()" ng-show="showChallengeBtn"><img src="img/desktop/btn_challenge.png" title="Button"></a>
     </div>
     <div class="make_qrcode">
         <qr text="qrCodeUrl" ng-if="fakeDelay"></qr>
@@ -16,7 +16,7 @@
                     <button ng-click="puzzle.api.solve()">solve</button>
                     <button ng-click="onYouTubeIframeAPIReady()">solve</button>-->
 
-        <div class="holdingDiv" ng-show="!puzzle.api.isSolved()">
+        <div class="holdingDiv" ng-show="!puzzle.api.isSolved()" >
             <sliding-puzzle class="system" ng-if="data.$id" dbid="{{data.$id}}" api="puzzle.api" size="{{data.rows}}x{{data.cols}}" movement="{{data.moves.move}}" src="{{data.src}}" payload="{{data.payload}}"></sliding-puzzle>
 
             <table>
@@ -47,10 +47,12 @@
 
 
 
-
-        <div id="myVideo" ng-if="puzzle.api.isSolved()">
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/SnbdEYW0q2w?autoplay=1&cc_load_policy=1" frameborder="0" allowfullscreen></iframe>
+        <div class="desktopVideo"  ng-if="puzzle.api.isSolved()">
+            <div id="myVideo">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/SnbdEYW0q2w?autoplay=1&cc_load_policy=1" frameborder="0" allowfullscreen></iframe>
+            </div>
         </div>
+
 
         <!-- <video id="myVideo" ng-if="puzzle.api.isSolved()" autoplay>
                     <source src="ciaz.mp4" type="video/mp4" >

@@ -94,7 +94,7 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
             $scope.generateGameInSystem($scope.id);
         });
     };
-
+    $scope.showChallengeBtn = false;
     /**
      * Generate Game in System
      */
@@ -114,6 +114,7 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
                 $scope.puzzle.move = obj.moves;
             });
             obj.$bindTo($scope, "data");
+            $scope.showChallengeBtn = true;
         }
         ;
     }
@@ -144,7 +145,7 @@ app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject) {
         if (!results[2]) return '';
         return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
-
+    $('.device-play').hide();
     $scope.showBtn = false;
     $scope.PlayNow = function() {
         $(".device-play").hide();
@@ -173,6 +174,11 @@ app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject) {
 
         var h = $(window).height() - 20;
         var fh = h / 3;
+
+        $scope.deviceChallenge = function(){
+            $(".device-challenge").hide();
+            $(".device-play").show();
+        }
 
         setTimeout(function() {
             $('.device.sliding-puzzle td ').height(fh + "px");
