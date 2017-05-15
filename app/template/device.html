@@ -1,24 +1,72 @@
 <div ng-controller="deviceCtrl" class="container">
-    <div class="device-challenge">
-        <a ng-click="deviceChallenge()"><img src="img/mobile/btn_play_now.png" title="Button"></a>
-    </div>
-    <div class="device-play">
-        <a ng-click="PlayNow()"><img src="img/mobile/btn_play_now.png" title="Button"></a>
-    </div>
-    <!--<div class="status">
-        moves: <strong>{{puzzle.api.moves}}</strong><br/> solved: <strong>{{puzzle.api.isSolved()}}</strong>
-    </div>
-    <button ng-click="puzzle.api.solve()">solve</button>-->
-    <div ng-show="showBtn">
-        <div ng-show="!puzzle.api.isSolved()">
-        <sliding-puzzle dbid="{{data.$id}}" class="device" api="puzzle.api" size="{{data.rows}}x{{data.cols}}" movement="{{data.moves.move}}" src="{{data.src}}" payload="{{data.payload}}">
-        </sliding-puzzle>
+    <div ng-show="QRFlag">
+        <div class="device-challenge">
+            <a ng-click="deviceChallenge()"><img src="img/mobile/btn_play_now.png" title="Button"></a>
+        </div>
+        <div class="device-play">
+            <a ng-click="PlayNow()"><img src="img/mobile/challange_now_btn.png" title="Button"></a>
+        </div>
+        <div ng-show="showBtn">
+            <div ng-show="!puzzle.api.isSolved()">
+                <sliding-puzzle dbid="{{data.$id}}" class="device" api="puzzle.api" size="{{data.rows}}x{{data.cols}}" movement="{{data.moves.move}}" src="{{data.src}}" payload="{{data.payload}}">
+                </sliding-puzzle>
+            </div>
+
+        </div>
+        <div  ng-if="puzzle.api.isSolved()">
+
+                <h2>Thank You</h2>
+                <!--<iframe width="560" height="315" src="https://www.youtube.com/embed/SnbdEYW0q2w?autoplay=1&cc_load_policy=1" frameborder="0" allowfullscreen></iframe>-->
+
         </div>
     </div>
-    <div class="mobileVideo" ng-if="puzzle.api.isSolved()">
-      <div id="myMobileVideo">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/SnbdEYW0q2w?autoplay=1&cc_load_policy=1" frameborder="0" allowfullscreen></iframe>
-      </div>
+    <div ng-show="!QRFlag">
+        <div class="device-challenge">
+            <a ng-click="deviceChallenge()"><img src="img/mobile/btn_play_now.png" title="Button"></a>
+        </div>
+        <div class="device-play">
+            <a ng-click="PlayNow()"><img src="img/mobile/challange_now_btn.png" title="Button"></a>
+        </div>
+        <!--<div class="status">
+            moves: <strong>{{puzzle.api.moves}}</strong><br/> solved: <strong>{{puzzle.api.isSolved()}}</strong>
+        </div>
+        <button ng-click="puzzle.api.solve()">solve</button>-->
+        <div ng-show="showBtn">
+            <div ng-show="!puzzle.api.isSolved()">
+                <sliding-puzzle class="system" ng-if="data.$id" dbid="{{data.$id}}" api="puzzle.api" size="{{data.rows}}x{{data.cols}}" movement="{{data.moves.move}}" src="{{data.src}}" payload="{{data.payload}}"></sliding-puzzle>
+
+                <table>
+                    <tr>
+                        <td width="60" align="left">Moves: </td>
+                        <td align="left">
+                            <ul class="time-list">
+                                <li>{{puzzle.api.moves}}</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="60" align="left">Time: </td>
+                        <td align="left">
+                            <timer interval="1000">
+                                <ul class="time-list">
+                                    <li>{{hours}} hr{{hoursS}}</li>
+                                    <li>{{minutes}} min{{minutesS}}</li>
+                                    <li>{{seconds}} sec{{secondsS}}</li>
+                                </ul>
+                            </timer>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+        </div>
+
+        <div class="mobileVideo"  ng-show="puzzle.api.isSolved()">
+            <div id="myMobileVideo">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/SnbdEYW0q2w?autoplay=1&cc_load_policy=1" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+
     </div>
     <!--<div ng-show="!showBtn">
         <button ng-click="PlayNow()">PlayNow</button>

@@ -114,6 +114,14 @@ ul {
     margin-left: -240px;
     z-index: 50;
 }
+#myMobileVideo{
+    width: 476px;
+    left: 45%;
+    position: absolute;
+    top: 16%;
+    margin-left: -240px;
+    z-index: 50;
+}
 
 .hide-puzzle {
     display: none;
@@ -197,6 +205,12 @@ ul {
     background-size: contain;
     position: relative;
 }
+.mobileVideo{
+    background: url("../img/desktop/thank-you.png") no-repeat;
+    min-height: 625px;
+    background-size: contain;
+    position: relative;
+}
 .device-challenge{
     background: url("../img/mobile/challange%20mobile.png") no-repeat;
     height: 100vh;
@@ -230,21 +244,6 @@ ul {
 
 .device-play a img {
     width: 25vw;
-}
-
-.mobileVideo{
-background: url("../img/desktop/thank-you.png") no-repeat;
-min-height: 625px;
-background-size: contain;
-position: relative;
-}
-#myMobileVideo{
-width: 476px;
-left: 45%;
-position: absolute;
-top: 16%;
-margin-left: -240px;
-z-index: 50;
 }
 
 @media(min-width: 320px) and (max-width: 767px){

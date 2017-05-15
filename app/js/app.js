@@ -103,7 +103,7 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
             $scope.url = "puzzle/" + id;
             var ref = firebase.database().ref($scope.url);
             var obj = $firebaseObject(ref);
-            $scope.qrCodeUrl = "http://10.10.1.183/ciaz/app/#!/device?id=" + id + "&user_Id=" + $scope.user_Id;
+            $scope.qrCodeUrl = "http://10.10.1.183/ciaz/app/#!/device?id=" + id + "&user_Id=" + $scope.user_Id +"&flag=true" ;
             obj.$loaded().then(function() {
                 //console.log(obj)
                 $scope.puzzle.payload = obj.payload;
@@ -134,7 +134,14 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
 
 });
 
-app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject) {
+app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject,$location) {
+   console.log( $location.search());
+    $scope.QRFlag = $location.search().flag;
+    console.log($scope.QRFlag);
+    if($scope.QRFlag == undefined){
+        $scope.QRFlag = false;
+        $('.device-play').hide();
+    }
     function getParameterByName(name, url) {
         if (!url)
             url = window.location.href;
@@ -145,7 +152,7 @@ app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject) {
         if (!results[2]) return '';
         return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
-    $('.device-play').hide();
+
     $scope.showBtn = false;
     $scope.PlayNow = function() {
         $(".device-play").hide();
@@ -178,6 +185,10 @@ app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject) {
         $scope.deviceChallenge = function(){
             $(".device-challenge").hide();
             $(".device-play").show();
+        }
+        $scope.qrCodePlayNow = function(){
+            $(".device-play").hide();
+            $scope.showBtn = true;
         }
 
         setTimeout(function() {
