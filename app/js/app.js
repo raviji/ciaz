@@ -29,8 +29,7 @@ app.run(function($firebaseArray, $firebaseObject) {
 });
 
 
-
-app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, slidingPuzzle, $timeout) {
+app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, slidingPuzzle, $timeout,serviceId) {
 
     $scope.loadgame = false;
     $scope.user_Id = "raviabc";
@@ -126,6 +125,8 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
     }
     /*QR code Challenge button functionlity*/
     $scope.challengeStarted = false;
+ /*   $scope.challengeStarted = serviceId.playNowSystem($scope.challengeStarted);
+    console.log($scope.challengeStarted);*/
     $scope.playNowSystem = function() {
         $('.make_qrcode').hide();
         $('.playgame').show();
@@ -134,67 +135,7 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
 
 });
 
-app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject,$location) {
-   console.log( $location.search());
-    $scope.QRFlag = $location.search().flag;
-    console.log($scope.QRFlag);
-    if($scope.QRFlag == undefined){
-        $scope.QRFlag = false;
-        $('.device-play').hide();
-    }
-    function getParameterByName(name, url) {
-        if (!url)
-            url = window.location.href;
-        name = name.replace(/[\[\]]/g, "\\$&");
-        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-            results = regex.exec(url);
-        if (!results) return null;
-        if (!results[2]) return '';
-        return decodeURIComponent(results[2].replace(/\+/g, " "));
-    }
+app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject,$location,$timeout,serviceId) {
 
-    $scope.showBtn = false;
-    $scope.PlayNow = function() {
-        $(".device-play").hide();
-        $scope.showBtn = true;
-    }
-
-    $scope.user_Id = getParameterByName("user_Id");
-    $scope.id = getParameterByName("id");
-
-
-    if ($scope.user_Id != undefined && $scope.id != undefined) {
-        $scope.url = "puzzle/" + $scope.id;
-        var ref = firebase.database().ref($scope.url);
-        var obj = $firebaseObject(ref);
-        obj.$loaded().then(function() {
-            //console.log(obj);
-            //$scope.test = true;
-            $scope.puzzle.payload = obj.payload;
-            $scope.puzzle.src = obj.src;
-            $scope.puzzle.title = obj.title;
-            $scope.puzzle.rows = obj.rows;
-            $scope.puzzle.cols = obj.cols;
-            $scope.puzzle.move = obj.moves;
-        });
-        obj.$bindTo($scope, "data");
-
-        var h = $(window).height() - 20;
-        var fh = h / 3;
-
-        $scope.deviceChallenge = function(){
-            $(".device-challenge").hide();
-            $(".device-play").show();
-        }
-        $scope.qrCodePlayNow = function(){
-            $(".device-play").hide();
-            $scope.showBtn = true;
-        }
-
-        setTimeout(function() {
-            $('.device.sliding-puzzle td ').height(fh + "px");
-        }, 2000);
-    }
-    ;
 
 });
