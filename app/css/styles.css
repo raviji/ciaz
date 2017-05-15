@@ -114,6 +114,14 @@ ul {
     margin-left: -240px;
     z-index: 50;
 }
+#myMobileVideo{
+    width: 476px;
+    left: 45%;
+    position: absolute;
+    top: 16%;
+    margin-left: -240px;
+    z-index: 50;
+}
 
 .hide-puzzle {
     display: none;
@@ -192,6 +200,12 @@ ul {
     height: 130px;
 }
 .desktopVideo{
+    background: url("../img/desktop/thank-you.png") no-repeat;
+    min-height: 625px;
+    background-size: contain;
+    position: relative;
+}
+.mobileVideo{
     background: url("../img/desktop/thank-you.png") no-repeat;
     min-height: 625px;
     background-size: contain;
