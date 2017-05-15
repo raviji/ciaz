@@ -59,11 +59,11 @@ app.run(function($rootScope) {
 app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, slidingPuzzle, $timeout, $window, $facebook) {
 
     $scope.isLoggedIn = false;
-    $scope.login = function() {
-        $facebook.login().then(function() {
-            refresh();
-        });
-    }
+    // $scope.login = function() {
+    //     $facebook.login().then(function() {
+    //         refresh();
+    //     });
+    // }
 
     function refresh() {
         $facebook.api("/me").then(
@@ -78,6 +78,15 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
 
     refresh();
 
+    $scope.challenge = function() {
+        // $facebook.login().then(function() {
+        //     refresh();
+        // });
+        $('.challange_dt').hide();
+        $('.make_qrcode').show();
+        $scope.fakeDelay = true;
+    }
+
     $scope.loadgame = false;
     $scope.user_Id = "raviabc";
     $scope.puzzle = {};
@@ -90,20 +99,13 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
     $('.make_qrcode').hide();
     $('.playgame').hide();
 
-    // $scope.string = 'http://10.10.1.183/ciaz/app/#!/device?id=-Kjg0BHhbUFyQ7pevMI0&user_Id=navya';
-    /*-------------- Random Array ---------*/
-    /*$scope.arr = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-    $scope.arr.sort(function() {
-        return .5 - Math.random();
-    });*/
-
     $scope.arr = ["2,9,3,1,4,5,7,8,6", "4,1,2,9,5,3,7,8,6", "4,1,3,9,2,5,7,8,6", "1,2,3,7,4,6,5,9,8", "1,9,3,5,2,6,4,7,8"];
     var pickAPayload = function() {
         $scope.randOne = $scope.arr[Math.floor(Math.random() * $scope.arr.length)];
         return $scope.randOne;
     };
 
-    console.log(pickAPayload())
+
 
     //Check User Exist
     var ref = firebase.database().ref('puzzle');
@@ -164,12 +166,8 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
         };
     }
 
-    $scope.challenge = function() {
-            $('.challange_dt').hide();
-            $('.make_qrcode').show();
-            $scope.fakeDelay = true;
-        }
-        /*QR code Challenge button functionlity*/
+
+    /*QR code Challenge button functionlity*/
     $scope.challengeStarted = false;
     $scope.playNowSystem = function() {
         $('.make_qrcode').hide();
