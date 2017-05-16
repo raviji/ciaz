@@ -1,9 +1,10 @@
 <div ng-controller="deviceCtrl" class="container">
     <div ng-show="QRFlag">
-       <!-- <div class="device-challenge">
+        <!-- <div class="device-challenge">
             <a ng-click="deviceChallenge()"><img src="img/mobile/btn_play_now.png" title="Button"></a>
         </div>-->
         <div class="device-qrlandingPage">
+            <img src="/img/mobile/mobile_Landing.jpg">
             <a ng-click="QRPlayNow()"><img src="img/mobile/challange_now_btn.png" title="Button"></a>
         </div>
         <div ng-show="showBtn">
@@ -13,7 +14,7 @@
             </div>
 
         </div>
-        <div  ng-if="puzzle.api.isSolved()" >
+        <div ng-if="puzzle.api.isSolved()">
 
             <!--<div ng-if="!isPuzzleTrue">
                 <sliding-puzzle dbid="{{data.$id}}" class="device qrcodePuzzle" api="puzzle.api" size="{{data.rows}}x{{data.cols}}" movement="{{data.moves.move}}" src="{{data.src}}" payload="{{data.payload}}">
@@ -26,7 +27,7 @@
 
 
 
-                <!--<iframe width="560" height="315" src="https://www.youtube.com/embed/SnbdEYW0q2w?autoplay=1&cc_load_policy=1" frameborder="0" allowfullscreen></iframe>-->
+        <!--<iframe width="560" height="315" src="https://www.youtube.com/embed/SnbdEYW0q2w?autoplay=1&cc_load_policy=1" frameborder="0" allowfullscreen></iframe>-->
     </div>
     <div ng-show="!QRFlag">
         <div class="device-challenge">
@@ -69,7 +70,7 @@
 
         </div>
 
-        <div class="mobileVideo"  ng-show="puzzle.api.isSolved()">
+        <div class="mobileVideo" ng-show="puzzle.api.isSolved()">
             <div id="myMobileVideo">
                 <iframe width="560" height="315" src="https://www.youtube.com/embed/SnbdEYW0q2w?autoplay=1&cc_load_policy=1" frameborder="0" allowfullscreen></iframe>
             </div>

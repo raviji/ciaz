@@ -69,7 +69,7 @@ app.factory("playSer", function() {
 
 app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, slidingPuzzle, $timeout, $window, $facebook, $location, playSer) {
 
-    $scope.server = "http://10.10.1.183/ciaz/";
+    $scope.server = "https://maruthiciaz.playbaddy.com/";
     $scope.isLoggedIn = false;
     $scope.loadgame = false;
     $scope.puzzle = {};
@@ -81,9 +81,11 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
         $facebook.login().then(function() {
             refresh();
         });
-        $('.challange_dt').hide();
-        $('.make_qrcode').show();
-        $scope.fakeDelay = true;
+        $timeout(function() {
+            $('.challange_dt').hide();
+            $('.make_qrcode').show();
+            $scope.fakeDelay = true;
+        }, 2000);
     }
 
     function refresh() {
@@ -138,6 +140,7 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
         $scope.addUser.moves.move = "";
         $scope.addUser.rows = 3;
         $scope.addUser.cols = 3;
+        $scope.addUser.playFlag = false;
         $scope.addUser.src = "./img/desktop/puzzle_820.png";
         var list = $firebaseArray(ref);
         list.$add($scope.addUser).then(function(ref) {
@@ -146,7 +149,7 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
             $scope.generateGameInSystem($scope.id, id);
         });
     };
-    $scope.showChallengeBtn = false;
+
     /**
      * Generate Game in System
      */
@@ -156,7 +159,7 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
             $scope.url = "puzzle/" + id;
             var ref = firebase.database().ref($scope.url);
             var obj = $firebaseObject(ref);
-            $scope.qrCodeUrl = $scope.server + "app/#!/device?id=" + id + "&user_Id=" + user_Id + "&flag=true";
+            $scope.qrCodeUrl = $scope.server + "#!/device?id=" + id + "&user_Id=" + user_Id + "&flag=true";
             obj.$loaded().then(function() {
                 //console.log(obj)
                 $scope.puzzle.payload = obj.payload;
@@ -167,10 +170,9 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
                 $scope.puzzle.move = obj.moves;
             });
             obj.$bindTo($scope, "data");
-            $scope.showChallengeBtn = true;
         }
-        ;
-    }
+
+    };
 
 
     /*QR code Challenge button functionlity*/
@@ -231,6 +233,7 @@ app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $
         $scope.showBtn = true;
     }
     $scope.QRPlayNow = function() {
+        $scope.addUser.playFlag = false;
         $(".device-qrlandingPage").hide();
         $scope.showBtn = true;
     }
