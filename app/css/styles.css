@@ -301,6 +301,26 @@ ul {
         position: relative;
         background-size: 100% 100%;
     }
+
+    .device-qrlandingPage a {
+        position: absolute;
+        bottom: 30px;
+        left: 0;
+        right: 0;
+        width: 75%;
+        margin: 0 auto;
+    }
+
+    .device-qrlandingPage a img {
+        width: 100%;
+    }
+    .device-qrlandingPage {
+        background: url(../img/mobile/challange_now.png) no-repeat;
+        height: 100vh;
+        width: 100%;
+        position: relative;
+        background-size: 100% 100%;
+    }
     .device {
         height: 100vh;
         margin: 0;
