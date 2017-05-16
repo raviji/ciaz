@@ -69,7 +69,7 @@ app.factory("playSer", function() {
 
 app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, slidingPuzzle, $timeout, $window, $facebook, $location, playSer) {
 
-    $scope.server = "http://10.10.1.183/ciaz/"
+    $scope.server = "http://10.10.1.183/ciaz/";
     $scope.isLoggedIn = false;
     $scope.loadgame = false;
     $scope.puzzle = {};
@@ -88,20 +88,17 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
 
     function refresh() {
         $facebook.api("/me").then(function(response) {
-            console.log(response.id);
+            //console.log(response.id);
             $scope.checkExistUser(response.id);
-            //$scope.user_Id = response.id;
+            $scope.user_Id = response.id;
             $scope.isLoggedIn = true;
         });
-    };
-
+    }
+    ;
     refresh();
-
-
-
     $timeout(function() {
         $scope.fakeDelay = false;
-    }, 1000)
+    }, 1000);
 
 
 
@@ -113,29 +110,30 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
 
     //Check User Exist
     $scope.checkExistUser = function(id) {
+        //console.log(id)
         var ref = firebase.database().ref('puzzle');
         var users = ref.orderByChild("userId").equalTo(id);
         $scope.users = $firebaseArray(users);
         $scope.users.$loaded().then(function(data) {
-            if (data[0] != undefined && $scope.user_Id == data[0].userId) {
+            if (data[0] != undefined && id == data[0].userId) {
                 console.log("true")
-                $scope.existUser(data[0].$id, data[0].userId);
+                $scope.generateGameInSystem(data[0].$id, data[0].userId);
             } else {
                 console.log("false")
-                $scope.createUser();
+                $scope.createUser(id);
             }
         });
     };
 
-    $scope.existUser = function(id, user) {
-            //window.location.href = "#!/device?id=" + id + "&user_Id=" + user;
-            $scope.generateGameInSystem(id)
-        }
-        /*-------------- Add and Get data to Database ---------*/
-    $scope.createUser = function() {
+    // $scope.existUser = function(id, user) {
+    //     //window.location.href = "#!/device?id=" + id + "&user_Id=" + user;
+    //     $scope.generateGameInSystem(id,user)
+    // }
+    /*-------------- Add and Get data to Database ---------*/
+    $scope.createUser = function(id) {
         var ref = firebase.database().ref('puzzle');
         $scope.loadgame = true;
-        $scope.addUser.userId = $scope.user_Id;
+        $scope.addUser.userId = id;
         $scope.addUser.payload = pickAPayload();
         $scope.addUser.moves.move = "";
         $scope.addUser.rows = 3;
@@ -144,20 +142,21 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
         var list = $firebaseArray(ref);
         list.$add($scope.addUser).then(function(ref) {
             $scope.id = ref.path.o[1];
-            window.location.href = "#!/device?id=" + $scope.id + "&user_Id=" + $scope.user_Id;
-            $scope.generateGameInSystem($scope.id);
+            //window.location.href = "#!/device?id=" + $scope.id + "&user_Id=" + id;
+            $scope.generateGameInSystem($scope.id, id);
         });
     };
     $scope.showChallengeBtn = false;
     /**
      * Generate Game in System
      */
-    $scope.generateGameInSystem = function(id) {
-        if ($scope.user_Id != undefined && id != undefined) {
+    $scope.generateGameInSystem = function(id, user_Id) {
+        //console.log(user_Id, id);
+        if (user_Id != undefined && id != undefined) {
             $scope.url = "puzzle/" + id;
             var ref = firebase.database().ref($scope.url);
             var obj = $firebaseObject(ref);
-            $scope.qrCodeUrl = $scope.server + "app/#!/device?id=" + id + "&user_Id=" + $scope.user_Id + "&flag=true";
+            $scope.qrCodeUrl = $scope.server + "app/#!/device?id=" + id + "&user_Id=" + user_Id + "&flag=true";
             obj.$loaded().then(function() {
                 //console.log(obj)
                 $scope.puzzle.payload = obj.payload;
@@ -169,7 +168,8 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
             });
             obj.$bindTo($scope, "data");
             $scope.showChallengeBtn = true;
-        };
+        }
+        ;
     }
 
 
@@ -271,14 +271,15 @@ app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $
 
 
 
-            /*playSer.playNowSystem("true")
-            console.log(playSer.playNowSystem("true"));*/
+        /*playSer.playNowSystem("true")
+        console.log(playSer.playNowSystem("true"));*/
         }
 
         setTimeout(function() {
             $('.device.sliding-puzzle td ').height(fh + "px");
         }, 2000);
-    };
+    }
+    ;
     $(".qrcodePuzzle").on('click', function() {
         $scope.tempVal = $(".qrcodePuzzle").attr('movement');
         console.log($(".qrcodePuzzle").attr('movement'));

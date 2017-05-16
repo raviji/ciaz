@@ -5,7 +5,8 @@
             </button>-->
         <div class="flexWidth">
             <div class="challange_dt" ng-if="!fakeDelay">
-                <a href="#" ng-click="challenge()" ng-show="showChallengeBtn"><img src="img/desktop/btn_challenge.png" title="Button"></a>
+                <img src="img/desktop/challange_820.png">
+                <a ng-click="challenge()" ng-show="showChallengeBtn"><img src="img/desktop/btn_challenge.png" title="Button"></a>
             </div>
             <div class="make_qrcode">
                 <qr text="qrCodeUrl" ng-if="fakeDelay"></qr>
@@ -46,10 +47,6 @@
                             </td>
                         </tr>
                     </table>
-                </div>
-
-                <div ng-show="data.moves.move == '2,2'" id="puzzleDone">
-                    <sliding-puzzle class="system qrcodePuzzle" ng-if="data.$id" dbid="{{data.$id}}" api="puzzle.api" size="{{data.rows}}x{{data.cols}}" movement="{{data.moves.move}}" src="{{data.src}}" payload="{{data.payload}}"></sliding-puzzle>
                 </div>
 
 

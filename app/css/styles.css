@@ -70,7 +70,7 @@ ul {
 }
 
 .system b {
-    display: block;
+    display: none;
 }
 
 .device {
@@ -153,11 +153,8 @@ ul {
 */
 
 .challange_dt {
-    background: url("../img/desktop/challange_820.png") no-repeat;
-    background-size: 100% 100%;
     position: relative;
     width: 100%;
-    height: 461px;
 }
 
 .challange_dt a {
@@ -165,6 +162,7 @@ ul {
     bottom: 10px;
     left: 50%;
     margin-left: -5vw;
+    z-index: 10;
 }
 
 .challange_dt a img {
