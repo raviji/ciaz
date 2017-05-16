@@ -56,27 +56,37 @@ app.run(function($rootScope) {
     }());
 });
 
-app.factory('playSer', function() {
-
-    // private
-    var value = 0;
-
-    // public
+app.factory('playSer', function($firebaseArray) {
+    /*var ref = firebase.database().ref('puzzle');
+    return $firebaseArray(ref);*/
     return {
-
-        getValue: function() {
-            return value;
-        },
-
-        setValue: function(val) {
-            value = val;
+        getDB: function(id) {
+            var ref = firebase.database().ref('puzzle');
+            var users = ref.orderByChild("userId").equalTo(id);
+            var user = $firebaseArray(users);
+            var test = null;
+            user.$loaded().then(function(data) {
+                //console.log(data[0])
+                this.data = data[0]
+            });
         }
+    }
 
-    };
+
+
+
+});
+app.factory('getSer', function($firebaseObject) {
+    var ref = firebase.database().ref('puzzle');
+    return $firebaseObject(ref);
 });
 
-app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, slidingPuzzle, $timeout, $window, $facebook, $location, playSer) {
+app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, slidingPuzzle, $timeout, $window, $facebook, $location, playSer, getSer) {
+    //console.log(getSer)
 
+
+
+    // $scope.flagPlay = playSer.playFlag;
     $scope.server = "https://maruthiciaz.playbaddy.com/";
     $scope.isLoggedIn = false;
     $scope.loadgame = false;
@@ -147,6 +157,7 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
         $scope.addUser.payload = pickAPayload();
         $scope.addUser.moves.move = "";
         $scope.addUser.rows = 3;
+        $scope.addUser.playFlag = false;
         $scope.addUser.cols = 3;
         $scope.addUser.src = "./img/desktop/puzzle_820.png";
         var list = $firebaseArray(ref);
@@ -183,18 +194,8 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
 
 
     /*QR code Challenge button functionlity*/
-
-    $scope.value = playSer.getValue();
-    console.log("out: " + $scope.value)
-    $scope.$on('increment-value-event', function() {
-        $scope.value = playSer.getValue();
-        console.log("in: " + $scope.value)
-    });
-
     $scope.challengeStarted = false;
     $scope.playNowSystem = function() {
-
-
         $('.make_qrcode').hide();
         $scope.challengeStarted = true;
     }
@@ -205,9 +206,9 @@ app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $
 
 
 
-    console.log($location.search());
+    //console.log($location.search());
     $scope.QRFlag = $location.search().flag;
-    console.log($scope.QRFlag);
+    //console.log($scope.QRFlag);
     if ($scope.QRFlag == undefined) {
         $scope.QRFlag = false;
 
@@ -224,7 +225,8 @@ app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $
         if (!results[2]) return '';
         return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
-
+    $scope.user_Id = getParameterByName("user_Id");
+    $scope.id = getParameterByName("id");
 
     $scope.showBtn = false;
     $scope.PlayNow = function() {
@@ -233,12 +235,20 @@ app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $
     }
     $scope.QRPlayNow = function() {
 
-        //$scope.addUser.playFlag = false;
+        var ref = firebase.database().ref('puzzle/' + $scope.user_Id);
+        var obj = $firebaseObject(ref);
+        obj.playFlag = true;
+        obj.$save().then(function(ref) {
+            //console.log("moved")
+
+        });
+        console.log(playSer.getDB($scope.user_Id))
+
+
+
         $(".device-qrlandingPage").hide();
         $scope.showBtn = true;
     }
-    $scope.user_Id = getParameterByName("user_Id");
-    $scope.id = getParameterByName("id");
 
 
     if ($scope.user_Id != undefined && $scope.id != undefined) {
@@ -265,12 +275,8 @@ app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $
             $(".device-play").show();
         }
         $scope.qrCodePlayNow = function() {
-            $scope.value = 1;
-            playSer.setValue($scope.value);
-            $rootScope.$broadcast('increment-value-event');
             $(".device-play").hide();
             $scope.showBtn = true;
-
         }
 
         setTimeout(function() {
