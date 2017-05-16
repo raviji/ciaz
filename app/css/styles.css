@@ -161,12 +161,12 @@ ul {
     position: absolute;
     bottom: 10px;
     left: 50%;
-    margin-left: -5vw;
+    margin-left: -10vw;
     z-index: 10;
 }
 
 .challange_dt a img {
-    width: 10vw;
+    width: 20vw;
 }
 
 .make_qrcode {

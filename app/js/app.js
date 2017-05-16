@@ -56,14 +56,22 @@ app.run(function($rootScope) {
     }());
 });
 
-app.factory("playSer", function() {
+app.factory('playSer', function() {
+
+    // private
+    var value = 0;
+
+    // public
     return {
-        playNowMobile: function(val) {
-            return val;
+
+        getValue: function() {
+            return value;
         },
-        playNowSystem: function(val) {
-            return val;
+
+        setValue: function(val) {
+            value = val;
         }
+
     };
 });
 
@@ -118,10 +126,10 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
         $scope.users = $firebaseArray(users);
         $scope.users.$loaded().then(function(data) {
             if (data[0] != undefined && id == data[0].userId) {
-                console.log("true")
+                //console.log("true")
                 $scope.generateGameInSystem(data[0].$id, data[0].userId);
             } else {
-                console.log("false")
+                //console.log("false")
                 $scope.createUser(id);
             }
         });
@@ -140,7 +148,6 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
         $scope.addUser.moves.move = "";
         $scope.addUser.rows = 3;
         $scope.addUser.cols = 3;
-        $scope.addUser.playFlag = false;
         $scope.addUser.src = "./img/desktop/puzzle_820.png";
         var list = $firebaseArray(ref);
         list.$add($scope.addUser).then(function(ref) {
@@ -177,28 +184,20 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
 
     /*QR code Challenge button functionlity*/
 
+    $scope.value = playSer.getValue();
+    console.log("out: " + $scope.value)
+    $scope.$on('increment-value-event', function() {
+        $scope.value = playSer.getValue();
+        console.log("in: " + $scope.value)
+    });
+
     $scope.challengeStarted = false;
     $scope.playNowSystem = function() {
+
+
         $('.make_qrcode').hide();
         $scope.challengeStarted = true;
     }
-    $scope.isPuzzleTrue = false;
-    $(".system").on('click', function() {
-        $scope.tempVal = $(".system").attr('movement');
-        console.log($(".system").attr('movement'));
-        console.log($(".system").attr('api'));
-
-        if ($scope.tempVal == "2,2") {
-            console.log("true");
-            $timeout(function() {
-                $scope.isPuzzleTrue = true;
-            }, 2000)
-
-        }
-    });
-
-
-
 
 });
 
@@ -233,7 +232,8 @@ app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $
         $scope.showBtn = true;
     }
     $scope.QRPlayNow = function() {
-        $scope.addUser.playFlag = false;
+
+        //$scope.addUser.playFlag = false;
         $(".device-qrlandingPage").hide();
         $scope.showBtn = true;
     }
@@ -265,17 +265,12 @@ app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $
             $(".device-play").show();
         }
         $scope.qrCodePlayNow = function() {
-            if (playSer.playNowMobile("true")) {
-                playSer.playNowSystem("play");
-                $(".device-play").hide();
-                $scope.showBtn = true;
-            }
+            $scope.value = 1;
+            playSer.setValue($scope.value);
+            $rootScope.$broadcast('increment-value-event');
+            $(".device-play").hide();
+            $scope.showBtn = true;
 
-
-
-
-        /*playSer.playNowSystem("true")
-        console.log(playSer.playNowSystem("true"));*/
         }
 
         setTimeout(function() {
