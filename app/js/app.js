@@ -71,26 +71,11 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
 
     $scope.server = "http://10.10.1.183/ciaz/"
     $scope.isLoggedIn = false;
-    // $scope.login = function() {
-    //     $facebook.login().then(function() {
-    //         refresh();
-    //     });
-    // }
-
-    function refresh() {
-        $facebook.api("/me").then(function(response) {
-            console.log(response);
-            $scope.welcomeMsg = "Welcome " + response.name;
-            $scope.isLoggedIn = true;
-        }, function(err) {
-            $scope.welcomeMsg = "Please log in";
-        });
-        $facebook.getLoginStatus("/me").then(function(response) {
-            console.log(response);
-        });
-    }
-
-    refresh();
+    $scope.loadgame = false;
+    $scope.puzzle = {};
+    $scope.addUser = [];
+    $scope.addUser.moves = {};
+    $('.make_qrcode').hide();
 
     $scope.challenge = function() {
         $facebook.login().then(function() {
@@ -101,16 +86,24 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
         $scope.fakeDelay = true;
     }
 
-    $scope.loadgame = false;
-    $scope.user_Id = "raviabc";
-    $scope.puzzle = {};
-    $scope.addUser = [];
-    $scope.addUser.moves = {};
+    function refresh() {
+        $facebook.api("/me").then(function(response) {
+            console.log(response.id);
+            $scope.checkExistUser(response.id);
+            //$scope.user_Id = response.id;
+            $scope.isLoggedIn = true;
+        });
+    };
+
+    refresh();
+
+
+
     $timeout(function() {
         $scope.fakeDelay = false;
     }, 1000)
 
-    $('.make_qrcode').hide();
+
 
     $scope.arr = ["2,9,3,1,4,5,7,8,6", "4,1,2,9,5,3,7,8,6", "4,1,3,9,2,5,7,8,6", "1,2,3,7,4,6,5,9,8", "1,9,3,5,2,6,4,7,8"];
     var pickAPayload = function() {
@@ -119,18 +112,20 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
     };
 
     //Check User Exist
-    var ref = firebase.database().ref('puzzle');
-    var users = ref.orderByChild("userId").equalTo($scope.user_Id);
-    $scope.users = $firebaseArray(users);
-    $scope.users.$loaded().then(function(data) {
-        if (data[0] != undefined && $scope.user_Id == data[0].userId) {
-            //console.log("true")
-            $scope.existUser(data[0].$id, data[0].userId);
-        } else {
-            //console.log("false")
-            $scope.createUser();
-        }
-    });
+    $scope.checkExistUser = function(id) {
+        var ref = firebase.database().ref('puzzle');
+        var users = ref.orderByChild("userId").equalTo(id);
+        $scope.users = $firebaseArray(users);
+        $scope.users.$loaded().then(function(data) {
+            if (data[0] != undefined && $scope.user_Id == data[0].userId) {
+                console.log("true")
+                $scope.existUser(data[0].$id, data[0].userId);
+            } else {
+                console.log("false")
+                $scope.createUser();
+            }
+        });
+    };
 
     $scope.existUser = function(id, user) {
             //window.location.href = "#!/device?id=" + id + "&user_Id=" + user;
