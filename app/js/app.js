@@ -56,8 +56,23 @@ app.run(function($rootScope) {
     }());
 });
 
-app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, slidingPuzzle, $timeout, $window, $facebook) {
+app.factory("playSer",function(){
+    return{
+        playNowMobile : function(val) {
+            return val;
+        },
+        playNowSystem : function(val) {
+            return val;
+        }
+    };
+});
 
+app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, slidingPuzzle, $timeout, $window, $facebook,$location,playSer) {
+    console.log(playSer.playNowSystem())
+
+
+
+    $scope.server = "http://10.10.1.183/ciaz/"
     $scope.isLoggedIn = false;
     // $scope.login = function() {
     //     $facebook.login().then(function() {
@@ -151,7 +166,7 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
             $scope.url = "puzzle/" + id;
             var ref = firebase.database().ref($scope.url);
             var obj = $firebaseObject(ref);
-            $scope.qrCodeUrl = "http://10.10.1.183/ciaz/app/#!/device?id=" + id + "&user_Id=" + $scope.user_Id + "&flag=true";
+            $scope.qrCodeUrl = $scope.server +"app/#!/device?id=" + id + "&user_Id=" + $scope.user_Id + "&flag=true";
             obj.$loaded().then(function() {
                 //console.log(obj)
                 $scope.puzzle.payload = obj.payload;
@@ -168,6 +183,7 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
 
 
     /*QR code Challenge button functionlity*/
+
     $scope.challengeStarted = false;
     $scope.playNowSystem = function() {
         $('.make_qrcode').hide();
@@ -175,16 +191,30 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
         $scope.challengeStarted = true;
     }
 
+
+    if(playSer.playNowSystem()== "play"){
+        alert(playSer.playNowSystem())
+        alert("you have clicked in mobile play btn");
+    }
+
+    $scope.challengeStarted = playSer.playNowSystem("false");
+    console.log( $scope.challengeStarted);
+
+
 });
 
-app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $location) {
+app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $location,$timeout,playSer) {
+
+
+
     console.log($location.search());
     $scope.QRFlag = $location.search().flag;
     console.log($scope.QRFlag);
     if ($scope.QRFlag == undefined) {
         $scope.QRFlag = false;
-        $('.device-play').hide();
+
     }
+    $('.device-play').hide();
 
     function getParameterByName(name, url) {
         if (!url)
@@ -197,12 +227,16 @@ app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $
         return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
 
+
     $scope.showBtn = false;
     $scope.PlayNow = function() {
         $(".device-play").hide();
         $scope.showBtn = true;
     }
-
+    $scope.QRPlayNow = function(){
+        $(".device-qrlandingPage").hide();
+        $scope.showBtn = true;
+    }
     $scope.user_Id = getParameterByName("user_Id");
     $scope.id = getParameterByName("id");
 
@@ -231,13 +265,35 @@ app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $
             $(".device-play").show();
         }
         $scope.qrCodePlayNow = function() {
-            $(".device-play").hide();
-            $scope.showBtn = true;
+            if(playSer.playNowMobile("true")){
+                playSer.playNowSystem("play");
+                $(".device-play").hide();
+                $scope.showBtn = true;
+            }
+
+
+
+
+            /*playSer.playNowSystem("true")
+            console.log(playSer.playNowSystem("true"));*/
         }
 
         setTimeout(function() {
             $('.device.sliding-puzzle td ').height(fh + "px");
         }, 2000);
     };
+    $(".qrcodePuzzle").on('click',function(){
+        $scope.tempVal = $(".qrcodePuzzle").attr('movement');
+        console.log($(".qrcodePuzzle").attr('movement'));
+        console.log($(".qrcodePuzzle").attr('api'));
+        $scope.isPuzzleTrue = false;
+        if($scope.tempVal == "2,2"){
+            console.log("true");
+            $timeout(function(){
+                $scope.isPuzzleTrue = true;
+            },1000)
+
+        }
+    })
 
 });
