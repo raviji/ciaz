@@ -12,7 +12,7 @@
                 <a href="#" ng-click="playNowSystem()"><img src="img/desktop/btn_challenge.png" title="Button"></a>
             </div>
 
-            <div class="systemPuzzle playgame" ng-show="challengeStarted">
+            <div class="" ng-show="challengeStarted">
 
                 <!--<div class="status">
                             moves: <strong>{{puzzle.api.moves}}</strong><br/> solved: <strong>{{puzzle.api.isSolved() }}</strong>
@@ -21,8 +21,8 @@
                         <button ng-click="puzzle.api.solve()">solve</button>
                         <button ng-click="onYouTubeIframeAPIReady()">solve</button>-->
 
-                <div class="holdingDiv" ng-show="!puzzle.api.isSolved()">
-                    <sliding-puzzle class="system" ng-if="data.$id" dbid="{{data.$id}}" api="puzzle.api" size="{{data.rows}}x{{data.cols}}" movement="{{data.moves.move}}" src="{{data.src}}" payload="{{data.payload}}"></sliding-puzzle>
+                <div ng-show="!puzzle.api.isSolved()">
+                    <sliding-puzzle class="system qrcodePuzzle" ng-if="data.$id" dbid="{{data.$id}}" api="puzzle.api" size="{{data.rows}}x{{data.cols}}" movement="{{data.moves.move}}" src="{{data.src}}" payload="{{data.payload}}"></sliding-puzzle>
 
                     <table>
                         <tr>
@@ -48,16 +48,19 @@
                     </table>
                 </div>
 
-
-
-
-
-                <div class="desktopVideo" ng-if="puzzle.api.isSolved()">
-                    <div id="myVideo">
-                        <iframe width="560" height="315" src="https://www.youtube.com/embed/SnbdEYW0q2w?autoplay=1&cc_load_policy=1" frameborder="0" allowfullscreen></iframe>
-                    </div>
+                <div ng-show="data.moves.move == '2,2'" id="puzzleDone">
+                    <sliding-puzzle class="system qrcodePuzzle" ng-if="data.$id" dbid="{{data.$id}}" api="puzzle.api" size="{{data.rows}}x{{data.cols}}" movement="{{data.moves.move}}" src="{{data.src}}" payload="{{data.payload}}"></sliding-puzzle>
                 </div>
 
+
+                <div ng-show="isPuzzleTrue">
+
+                    <div class="desktopVideo">
+                        <div id="myVideo">
+                            <iframe width="560" height="315" src="https://www.youtube.com/embed/SnbdEYW0q2w?autoplay=1&cc_load_policy=1" frameborder="0" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                </div>
 
                 <!-- <video id="myVideo" ng-if="puzzle.api.isSolved()" autoplay>
                         <source src="ciaz.mp4" type="video/mp4" >

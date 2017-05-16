@@ -107,16 +107,10 @@ ul {
 }
 
 #myVideo {
-    /*width: 476px;
-    left: 46%;
-    position: absolute;
-    top: 25%;
-    margin-left: -240px;
-    z-index: 50;*/
     width: 476px;
-    left: 9vw;
+    left: 127px;
     position: absolute;
-    top: 10vw;
+    top: 125px;
     margin-left: 0;
     z-index: 50;
 }
@@ -267,6 +261,7 @@ ul {
 .flexWidth {
     width: 820px !important;
     margin: 0 auto;
+    border: 1px solid red;
 }
 
 @media(min-width: 320px) and (max-width: 767px) {
@@ -301,7 +296,6 @@ ul {
         position: relative;
         background-size: 100% 100%;
     }
-
     .device-qrlandingPage a {
         position: absolute;
         bottom: 30px;
@@ -310,7 +304,6 @@ ul {
         width: 75%;
         margin: 0 auto;
     }
-
     .device-qrlandingPage a img {
         width: 100%;
     }
