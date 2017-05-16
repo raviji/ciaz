@@ -261,7 +261,6 @@ ul {
 .flexWidth {
     width: 820px !important;
     margin: 0 auto;
-    border: 1px solid red;
 }
 
 @media(min-width: 320px) and (max-width: 767px) {

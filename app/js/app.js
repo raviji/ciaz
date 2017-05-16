@@ -78,22 +78,24 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
     // }
 
     function refresh() {
-        $facebook.api("/me").then(
-            function(response) {
-                $scope.welcomeMsg = "Welcome " + response.name;
-                $scope.isLoggedIn = true;
-            },
-            function(err) {
-                $scope.welcomeMsg = "Please log in";
-            });
+        $facebook.api("/me").then(function(response) {
+            console.log(response);
+            $scope.welcomeMsg = "Welcome " + response.name;
+            $scope.isLoggedIn = true;
+        }, function(err) {
+            $scope.welcomeMsg = "Please log in";
+        });
+        $facebook.getLoginStatus("/me").then(function(response) {
+            console.log(response);
+        });
     }
 
     refresh();
 
     $scope.challenge = function() {
-        // $facebook.login().then(function() {
-        //     refresh();
-        // });
+        $facebook.login().then(function() {
+            refresh();
+        });
         $('.challange_dt').hide();
         $('.make_qrcode').show();
         $scope.fakeDelay = true;
