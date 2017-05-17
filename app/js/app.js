@@ -79,14 +79,6 @@ app.factory('playSer', function() {
 });
 
 app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, slidingPuzzle, $timeout, $window, $facebook, $location, playSer) {
-    //window.localStorage.getItem("goplay", true)
-    $scope.$watch(function() { return window.localStorage.getItem("goplay"); }, function(newVal, oldVal) {
-        if (oldVal !== newVal && newVal === undefined) {
-            console.log('It is undefined');
-        } else {
-            console.log('It is not undefined');
-        }
-    })
 
     $scope.server = "https://maruthiciaz.playbaddy.com/";
     $scope.isLoggedIn = false;
@@ -195,8 +187,6 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
 
     /*QR code Challenge button functionlity*/
 
-
-
     $scope.challengeStarted = false;
     $scope.playNowSystem = function() {
 
@@ -279,18 +269,6 @@ app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $
             $('.device.sliding-puzzle td ').height(fh + "px");
         }, 2000);
     };
-    $(".qrcodePuzzle").on('click', function() {
-        $scope.tempVal = $(".qrcodePuzzle").attr('movement');
-        console.log($(".qrcodePuzzle").attr('movement'));
-        console.log($(".qrcodePuzzle").attr('api'));
-        $scope.isPuzzleTrue = false;
-        if ($scope.tempVal == "2,2") {
-            console.log("true");
-            $timeout(function() {
-                $scope.isPuzzleTrue = true;
-            }, 1000)
 
-        }
-    });
 
 });
