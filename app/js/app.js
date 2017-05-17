@@ -63,10 +63,7 @@ app.factory('playSer', function() {
 
     // public
     return {
-        obj: {
-            name: "Ravi",
-            age: 32
-        },
+
         getValue: function() {
             return value;
         },
@@ -184,8 +181,14 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
     };
 
 
-
     /*QR code Challenge button functionlity*/
+
+    $scope.value = playSer.getValue();
+    console.log("out: " + $scope.value)
+    $scope.$on('increment-value-event', function() {
+        $scope.value = playSer.getValue();
+        console.log("in: " + $scope.value)
+    });
 
     $scope.challengeStarted = false;
     $scope.playNowSystem = function() {
@@ -198,6 +201,7 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
 });
 
 app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $location, $timeout, playSer) {
+
 
 
     console.log($location.search());
@@ -260,6 +264,9 @@ app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $
             $(".device-play").show();
         }
         $scope.qrCodePlayNow = function() {
+            $scope.value = 1;
+            playSer.setValue($scope.value);
+            $rootScope.$broadcast('increment-value-event');
             $(".device-play").hide();
             $scope.showBtn = true;
 
@@ -269,6 +276,18 @@ app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $
             $('.device.sliding-puzzle td ').height(fh + "px");
         }, 2000);
     };
+    $(".qrcodePuzzle").on('click', function() {
+        $scope.tempVal = $(".qrcodePuzzle").attr('movement');
+        console.log($(".qrcodePuzzle").attr('movement'));
+        console.log($(".qrcodePuzzle").attr('api'));
+        $scope.isPuzzleTrue = false;
+        if ($scope.tempVal == "2,2") {
+            console.log("true");
+            $timeout(function() {
+                $scope.isPuzzleTrue = true;
+            }, 1000)
 
+        }
+    });
 
 });

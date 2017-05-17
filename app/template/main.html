@@ -1,17 +1,8 @@
 <div ng-controller="systemCtrl" class="container-fluid">
     <div id="fb-root"></div>
     <!--<button type="button" ng-click="login()" ng-hide="isLoggedIn" class="btn btn-default navbar-btn">
-                Login
-            </button>-->
-
-    <!--<div class="status">
-        moves: <strong>{{puzzle.api.moves}}</strong><br/> solved: <strong>{{puzzle.api.isSolved() }}</strong>
-
-    </div>-->
-
-    <!--<button ng-click="puzzle.api.solve()">solve</button>
-    <button ng-click="onYouTubeIframeAPIReady()">solve</button>-->
-
+                 Login
+             </button>-->
     <div class="flexWidth">
         <div class="challange_dt" ng-if="!fakeDelay">
             <img src="img/desktop/challange_820.png">
@@ -24,9 +15,15 @@
 
         <div class="" ng-show="challengeStarted">
 
+            <!--<div class="status">
+                             moves: <strong>{{puzzle.api.moves}}</strong><br/> solved: <strong>{{puzzle.api.isSolved() }}</strong>
+ 
+                         </div>
+                         <button ng-click="puzzle.api.solve()">solve</button>
+                         <button ng-click="onYouTubeIframeAPIReady()">solve</button>-->
 
             <div ng-show="!puzzle.api.isSolved()">
-                <sliding-puzzle class="system qrcodePuzzle" solved="{{puzzle.api.isSolved()}}" ng-if="data.$id" dbid="{{data.$id}}" api="puzzle.api" size="{{data.rows}}x{{data.cols}}" movement="{{data.moves.move}}" src="{{data.src}}" payload="{{data.payload}}"></sliding-puzzle>
+                <sliding-puzzle class="system qrcodePuzzle" ng-if="data.$id" dbid="{{data.$id}}" api="puzzle.api" size="{{data.rows}}x{{data.cols}}" movement="{{data.moves.move}}" src="{{data.src}}" payload="{{data.payload}}"></sliding-puzzle>
 
                 <table>
                     <tr>
@@ -53,8 +50,7 @@
             </div>
         </div>
 
-
-        <div ng-show="puzzle.api.isSolved()">
+        <div ng-if="puzzle.api.isSolved()">
 
             <div class="desktopVideo">
                 <div id="myVideo">
@@ -63,12 +59,5 @@
             </div>
         </div>
 
-
-
-
     </div>
-
-
-
-
 </div>
