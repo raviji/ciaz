@@ -62,8 +62,8 @@
                         this.grid[trow][tcol] = tref;
                         var sref = this.grid[srow][scol];
                         this.moves++;
-                    // console.log(sref.id)
-                    // console.log(tref.id)
+                        // console.log(sref.id)
+                        // console.log(tref.id)
                     }
                 }
 
@@ -224,7 +224,7 @@
 
                     if (attrs.api) {
                         scope.api = scope.puzzle;
-                    //console.log(scope.api.grid)
+                        //console.log(scope.api.grid)
                     }
                     tile();
 
@@ -251,23 +251,10 @@
                         scope.puzzle.LoadPayload(scope.payload);
                         scope.puzzle.getFBid(scope.dbid);
                     }
-                //scope.puzzle.moveImage(scope.movement);
+                    //scope.puzzle.moveImage(scope.movement);
                 }
 
                 scope.$watch('movement', function(movement) {
-                    /* if (angular.isDefined(scope.puzzle.isSolved())) {
-                         if (scope.puzzle.isSolved()) {
-                             $(".system").fadeOut('slow');
-                             var myVideo = document.getElementById("myVideo");
-                             if (myVideo.paused)
-                                 myVideo.play();
-                             else
-                                 myVideo.pause();
-                         }
-
-                     }*/
-
-
                     if (angular.isDefined(scope.puzzle)) {
                         var arr = movement.split(',');
                         scope.puzzle.moveImage(arr[0], arr[1]);

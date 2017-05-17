@@ -63,7 +63,10 @@ app.factory('playSer', function() {
 
     // public
     return {
-
+        obj: {
+            name: "Ravi",
+            age: 32
+        },
         getValue: function() {
             return value;
         },
@@ -76,6 +79,14 @@ app.factory('playSer', function() {
 });
 
 app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, slidingPuzzle, $timeout, $window, $facebook, $location, playSer) {
+    //window.localStorage.getItem("goplay", true)
+    $scope.$watch(function() { return window.localStorage.getItem("goplay"); }, function(newVal, oldVal) {
+        if (oldVal !== newVal && newVal === undefined) {
+            console.log('It is undefined');
+        } else {
+            console.log('It is not undefined');
+        }
+    })
 
     $scope.server = "https://maruthiciaz.playbaddy.com/";
     $scope.isLoggedIn = false;
@@ -103,8 +114,7 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
             $scope.user_Id = response.id;
             $scope.isLoggedIn = true;
         });
-    }
-    ;
+    };
     refresh();
     $timeout(function() {
         $scope.fakeDelay = false;
@@ -182,14 +192,10 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
     };
 
 
+
     /*QR code Challenge button functionlity*/
 
-    $scope.value = playSer.getValue();
-    console.log("out: " + $scope.value)
-    $scope.$on('increment-value-event', function() {
-        $scope.value = playSer.getValue();
-        console.log("in: " + $scope.value)
-    });
+
 
     $scope.challengeStarted = false;
     $scope.playNowSystem = function() {
@@ -202,7 +208,6 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
 });
 
 app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $location, $timeout, playSer) {
-
 
 
     console.log($location.search());
@@ -265,9 +270,6 @@ app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $
             $(".device-play").show();
         }
         $scope.qrCodePlayNow = function() {
-            $scope.value = 1;
-            playSer.setValue($scope.value);
-            $rootScope.$broadcast('increment-value-event');
             $(".device-play").hide();
             $scope.showBtn = true;
 
@@ -276,8 +278,7 @@ app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $
         setTimeout(function() {
             $('.device.sliding-puzzle td ').height(fh + "px");
         }, 2000);
-    }
-    ;
+    };
     $(".qrcodePuzzle").on('click', function() {
         $scope.tempVal = $(".qrcodePuzzle").attr('movement');
         console.log($(".qrcodePuzzle").attr('movement'));

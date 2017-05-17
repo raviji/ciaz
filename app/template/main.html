@@ -1,81 +1,73 @@
 <div ng-controller="systemCtrl" class="container-fluid">
-    <div id="fb-root">
-        <!--<button type="button" ng-click="login()" ng-hide="isLoggedIn" class="btn btn-default navbar-btn">
+    <div id="fb-root"></div>
+    <!--<button type="button" ng-click="login()" ng-hide="isLoggedIn" class="btn btn-default navbar-btn">
                 Login
             </button>-->
-        <div class="flexWidth">
-            <div class="challange_dt" ng-if="!fakeDelay">
-                <img src="img/desktop/challange_820.png">
-                <a ng-click="challenge()"><img src="img/desktop/btn_challenge.png" title="Button"></a>
-            </div>
-            <div class="make_qrcode">
-                <qr text="qrCodeUrl" ng-if="fakeDelay"></qr>
-                <a href="#" ng-click="playNowSystem()"><img src="img/desktop/btn_challenge.png" title="Button"></a>
-            </div>
 
-            <div class="" ng-show="challengeStarted">
+    <!--<div class="status">
+        moves: <strong>{{puzzle.api.moves}}</strong><br/> solved: <strong>{{puzzle.api.isSolved() }}</strong>
 
-                <!--<div class="status">
-                            moves: <strong>{{puzzle.api.moves}}</strong><br/> solved: <strong>{{puzzle.api.isSolved() }}</strong>
+    </div>-->
 
-                        </div>
-                        <button ng-click="puzzle.api.solve()">solve</button>
-                        <button ng-click="onYouTubeIframeAPIReady()">solve</button>-->
+    <button ng-click="puzzle.api.solve()">solve</button>
+    <button ng-click="onYouTubeIframeAPIReady()">solve</button>
 
-                <div ng-show="!puzzle.api.isSolved()">
-                    <sliding-puzzle class="system qrcodePuzzle" ng-if="data.$id" dbid="{{data.$id}}" api="puzzle.api" size="{{data.rows}}x{{data.cols}}" movement="{{data.moves.move}}" src="{{data.src}}" payload="{{data.payload}}"></sliding-puzzle>
-
-                    <table>
-                        <tr>
-                            <td width="60" align="left">Moves: </td>
-                            <td align="left">
-                                <ul class="time-list">
-                                    <li>{{puzzle.api.moves}}</li>
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td width="60" align="left">Time: </td>
-                            <td align="left">
-                                <timer interval="1000">
-                                    <ul class="time-list">
-                                        <li>{{hours}} hr{{hoursS}}</li>
-                                        <li>{{minutes}} min{{minutesS}}</li>
-                                        <li>{{seconds}} sec{{secondsS}}</li>
-                                    </ul>
-                                </timer>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-
-
-                <div ng-show="puzzle.api.isSolved()">
-
-                    <div class="desktopVideo">
-                        <div id="myVideo">
-                            <iframe width="560" height="315" src="https://www.youtube.com/embed/SnbdEYW0q2w?autoplay=1&cc_load_policy=1" frameborder="0" allowfullscreen></iframe>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- <video id="myVideo" ng-if="puzzle.api.isSolved()" autoplay>
-                        <source src="ciaz.mp4" type="video/mp4" >
-                        Your browser does not support HTML5 video.
-                    </video><br>-->
-
-            </div>
-            <!--<button ng-click="playPause(puzzle.api.isSolved())">Play/Pause</button>
-        <button ng-click="puzzle.api.solve()">solve</button> moves: <strong>{{puzzle.api.moves}}</strong><br/> solved: <strong>{{puzzle.api.isSolved() }}</strong>-->
-
-            <div>
-                <!--<div style="padding: 20px" ng-show="!challengeStarted">-->
-
-                <!--<qr type-number="8" correction-level="'M'" size="200" input-mode="'ALPHA_NUM'" text="string" image="true"></qr>-->
-                <!--</div>-->
-            </div>
+    <div class="flexWidth">
+        <div class="challange_dt" ng-if="!fakeDelay">
+            <img src="img/desktop/challange_820.png">
+            <a ng-click="challenge()"><img src="img/desktop/btn_challenge.png" title="Button"></a>
+        </div>
+        <div class="make_qrcode">
+            <qr text="qrCodeUrl" ng-if="fakeDelay"></qr>
+            <a href="#" ng-click="playNowSystem()"><img src="img/desktop/btn_challenge.png" title="Button"></a>
         </div>
 
+        <div class="" ng-show="challengeStarted">
 
+
+            <div ng-show="!puzzle.api.isSolved()">
+                <sliding-puzzle class="system qrcodePuzzle" solved="{{puzzle.api.isSolved()}}" ng-if="data.$id" dbid="{{data.$id}}" api="puzzle.api" size="{{data.rows}}x{{data.cols}}" movement="{{data.moves.move}}" src="{{data.src}}" payload="{{data.payload}}"></sliding-puzzle>
+
+                <table>
+                    <tr>
+                        <td width="60" align="left">Moves: </td>
+                        <td align="left">
+                            <ul class="time-list">
+                                <li>{{puzzle.api.moves}}</li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="60" align="left">Time: </td>
+                        <td align="left">
+                            <timer interval="1000">
+                                <ul class="time-list">
+                                    <li>{{hours}} hr{{hoursS}}</li>
+                                    <li>{{minutes}} min{{minutesS}}</li>
+                                    <li>{{seconds}} sec{{secondsS}}</li>
+                                </ul>
+                            </timer>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
+
+            <div ng-show="puzzle.api.isSolved()">
+
+                <div class="desktopVideo">
+                    <div id="myVideo">
+                        <iframe width="600" height="400" src="https://www.youtube.com/embed/SnbdEYW0q2w?autoplay=1&cc_load_policy=1" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
 
     </div>
+
+
+
+
+</div>

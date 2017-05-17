@@ -107,10 +107,10 @@ ul {
 }
 
 #myVideo {
-    width: 476px;
+    width: 600px;
     left: 127px;
     position: absolute;
-    top: 125px;
+    top: 140px;
     margin-left: 0;
     z-index: 50;
 }
@@ -202,10 +202,9 @@ ul {
 
 .desktopVideo {
     background: url("../img/desktop/thank-you_820.png") no-repeat;
-    /* min-height: 625px;*/
+    min-height: 625px;
     background-size: 100% 100%;
     position: relative;
-    height: 523px;
 }
 
 .mobileVideo {
