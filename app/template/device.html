@@ -27,7 +27,7 @@
 
         <!--<iframe width="560" height="315" src="https://www.youtube.com/embed/SnbdEYW0q2w?autoplay=1&cc_load_policy=1" frameborder="0" allowfullscreen></iframe>-->
     </div>
-    <div ng-show="!QRFlag">
+    <div ng-if="!QRFlag">
         <div class="device-challenge">
             <a ng-click="deviceChallenge()"><img src="img/mobile/btn_play_now.png" title="Button"></a>
         </div>
@@ -38,7 +38,7 @@
             moves: <strong>{{puzzle.api.moves}}</strong><br/> solved: <strong>{{puzzle.api.isSolved()}}</strong>
         </div>
         <button ng-click="puzzle.api.solve()">solve</button>-->
-        <div ng-show="showBtn">
+        <div ng-if="showBtn">
             <div ng-show="!puzzle.api.isSolved()">
                 <sliding-puzzle class="system" ng-if="data.$id" dbid="{{data.$id}}" api="puzzle.api" size="{{data.rows}}x{{data.cols}}" movement="{{data.moves.move}}" src="{{data.src}}" payload="{{data.payload}}"></sliding-puzzle>
 
@@ -68,7 +68,7 @@
 
         </div>
 
-        <div class="mobileVideo" ng-show="puzzle.api.isSolved()">
+        <div class="mobileVideo" ng-if="puzzle.api.isSolved()">
             <div id="myMobileVideo">
                 <iframe width="560" height="315" src="https://www.youtube.com/embed/SnbdEYW0q2w?autoplay=1&cc_load_policy=1" frameborder="0" allowfullscreen></iframe>
             </div>

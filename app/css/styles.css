@@ -181,11 +181,11 @@ ul {
     position: absolute;
     bottom: 20px;
     left: 50%;
-    margin-left: -150px;
+    margin-left: -100px;
 }
 
 .make_qrcode a img {
-    width: 12vw;
+    width: 200px;
 }
 
 .make_qrcode qr {
