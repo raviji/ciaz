@@ -1,7 +1,7 @@
 'use strict';
 var config_module = angular.module('CIAZ_API_URL.config', [])
     .constant('API_BASE_URL', 'https://dev.sttarter.com:3000/');
-var app = angular.module('puzzleApp', ['slidingPuzzle', 'firebase', 'ngRoute', 'swipe', 'ui.router', 'timer', 'ja.qr', 'ngFacebook', 'CIAZ_API_URL.config']);
+var app = angular.module('puzzleApp', ['slidingPuzzle', 'firebase', 'ngRoute', 'swipe', 'ui.router', 'timer', 'ja.qr', 'ngFacebook', 'CIAZ_API_URL.config', 'adamgoose.webdis']);
 
 app.config(function($routeProvider, $stateProvider, $urlRouterProvider) {
 
@@ -56,9 +56,18 @@ app.run(function($rootScope) {
         firstScriptElement.parentNode.insertBefore(facebookJS, firstScriptElement);
     }());
 });
+app.config(['WebdisProvider', function(WebdisProvider) {
+    WebdisProvider.setHost('35.154.80.39');
+    WebdisProvider.setPort(6379);
+}]);
+
+app.controller('systemCtrl', function($scope, $http, $firebaseArray, $firebaseObject, slidingPuzzle, $timeout, $window, $facebook, $location, API_BASE_URL, Webdis) {
+
+    // Webdis.subscribe('my-channel', function(data, channel) {
+    //     console.log('Message received on channel ' + channel + ': ' + data);
+    // }, $scope);
 
 
-app.controller('systemCtrl', function($scope, $http, $firebaseArray, $firebaseObject, slidingPuzzle, $timeout, $window, $facebook, $location, API_BASE_URL) {
 
     $scope.server = "https://dev.sttarter.com/ciaz/";
     $scope.isLoggedIn = false;

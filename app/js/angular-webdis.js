@@ -16,8 +16,9 @@
     this.callbacks = {};
     this.scopes = {};
     this.init = function(host, port) {
-      this.socket = new WebSocket('ws://' + host + ':' + port + '/');
+      this.socket = new WebSocket('ws://' + host + ':' + port + '/0');
       var me = this;
+
 
       me.socket.onopen = function() {
         var command = ["SUBSCRIBE"];
