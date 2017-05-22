@@ -8,12 +8,15 @@
             <img src="img/desktop/challange_820.png">
             <a ng-click="challenge()"><img src="img/desktop/btn_challenge.png" title="Button"></a>
         </div>
+        {{data}}
         <div class="make_qrcode">
             <qr text="qrCodeUrl" ng-if="fakeDelay"></qr>
             <a href="#" ng-click="playNowSystem()"><img src="img/desktop/btn_challenge.png" title="Button"></a>
         </div>
 
+
         <div class="" ng-if="challengeStarted">
+
 
             <!--<div class="status">
                              moves: <strong>{{puzzle.api.moves}}</strong><br/> solved: <strong>{{puzzle.api.isSolved() }}</strong>
@@ -22,8 +25,8 @@
                          <button ng-click="puzzle.api.solve()">solve</button>
                          <button ng-click="onYouTubeIframeAPIReady()">solve</button>-->
 
-            <div ng-show="!puzzle.api.isSolved()">
-                <sliding-puzzle class="system qrcodePuzzle" ng-if="data.$id" dbid="{{data.$id}}" api="puzzle.api" size="{{data.rows}}x{{data.cols}}" movement="{{data.moves.move}}" src="{{data.src}}" payload="{{data.payload}}"></sliding-puzzle>
+            <div ng-if="!puzzle.api.isSolved()">
+                <sliding-puzzle class="system qrcodePuzzle" ng-if="data.userId" dbid="{{data.userId}}" api="puzzle.api" size="3x3" movement="{{data.move}}" src="{{data.src}}" payload="{{data.payload}}"></sliding-puzzle>
 
                 <table>
                     <tr>
