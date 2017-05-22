@@ -1,7 +1,7 @@
 'use strict';
 var config_module = angular.module('CIAZ_API_URL.config', [])
     .constant('API_BASE_URL', 'https://dev.sttarter.com:3000/');
-var app = angular.module('puzzleApp', ['slidingPuzzle', 'firebase', 'ngRoute', 'swipe', 'ui.router', 'timer', 'ja.qr', 'ngFacebook','CIAZ_API_URL.config']);
+var app = angular.module('puzzleApp', ['slidingPuzzle', 'firebase', 'ngRoute', 'swipe', 'ui.router', 'timer', 'ja.qr', 'ngFacebook', 'CIAZ_API_URL.config']);
 
 app.config(function($routeProvider, $stateProvider, $urlRouterProvider) {
 
@@ -31,7 +31,7 @@ app.run(function($firebaseArray, $firebaseObject) {
 });
 
 app.config(function($facebookProvider) {
-    $facebookProvider.setAppId('1351080128304970');
+    $facebookProvider.setAppId('1457713207623290');
 })
 
 app.run(function($rootScope) {
@@ -58,9 +58,9 @@ app.run(function($rootScope) {
 });
 
 
-app.controller('systemCtrl', function($scope, $http, $firebaseArray, $firebaseObject, slidingPuzzle, $timeout, $window, $facebook, $location,API_BASE_URL) {
-    //$scope.apiURL ="https://dev.sttarter.com:3000/";
-    $scope.server = "http://10.10.1.183/ciaz/app/";
+app.controller('systemCtrl', function($scope, $http, $firebaseArray, $firebaseObject, slidingPuzzle, $timeout, $window, $facebook, $location, API_BASE_URL) {
+
+    $scope.server = "https://dev.sttarter.com/ciaz/";
     $scope.isLoggedIn = false;
     $scope.loadgame = false;
     $scope.puzzle = {};
@@ -68,35 +68,28 @@ app.controller('systemCtrl', function($scope, $http, $firebaseArray, $firebaseOb
 
     $('.make_qrcode').hide();
 
-    console.log(API_BASE_URL);
-
-    $scope.challenge = function() {
-        $scope.createUser("56");
+    //console.log(API_BASE_URL);
+    $timeout(function() {
         $scope.fakeDelay = false;
-        /* $facebook.login().then(function() {
-         refresh();
-         });
-         $timeout(function() {
-         $('.challange_dt').hide();
-         $('.make_qrcode').show();
-         $scope.fakeDelay = true;
-         }, 2000);*/
+    }, 1000);
+    $scope.challenge = function() {
+        // $scope.createUser("56");
+        $scope.fakeDelay = false;
+        $facebook.login().then(function() {
+            $scope.refresh();
+        });
     }
 
-    /*function refresh() {
-     $facebook.api("/me").then(function(response) {
-     //console.log(response.id);
-     $scope.checkExistUser(response.id);
-     $scope.user_Id = response.id;
-     $scope.isLoggedIn = true;
-     });
-     }
-     ;
-     refresh();
-     $timeout(function() {
-     $scope.fakeDelay = false;
-     }, 1000);
-     */
+    $scope.refresh = function() {
+        $facebook.api("/me").then(function(response) {
+            //console.log(response.id);
+            $scope.createUser(response.id);
+            $scope.isLoggedIn = true;
+        });
+    };
+
+
+
 
 
     $scope.arr = ["2,9,3,1,4,5,7,8,6", "4,1,2,9,5,3,7,8,6", "4,1,3,9,2,5,7,8,6", "1,2,3,7,4,6,5,9,8", "1,9,3,5,2,6,4,7,8"];
@@ -116,14 +109,14 @@ app.controller('systemCtrl', function($scope, $http, $firebaseArray, $firebaseOb
         $scope.obj.userId = id;
         $scope.obj.payload = pickAPayload();
         $scope.obj.move = "";
-        console.log($scope.obj);
+        //console.log($scope.obj);
         $http({
             method: 'POST',
-            url:  API_BASE_URL +'userSignup',
+            url: API_BASE_URL + 'userSignup',
             data: $scope.obj
         }).then(function(response) {
-            console.log(response.data);
-            console.log(response.status);
+            //console.log(response.data);
+            //console.log(response.status);
             if (response.status == 200) {
                 $scope.data = response.data.user;
                 $scope.data.src = "img/desktop/puzzle_820.png";
@@ -132,7 +125,7 @@ app.controller('systemCtrl', function($scope, $http, $firebaseArray, $firebaseOb
                     $('.make_qrcode').show();
                     $scope.fakeDelay = true;
                     $scope.qrCodeUrl = $scope.server + "#!/device?&userId=" + response.data.user.userId + "&flag=true";
-                    console.log($scope.qrCodeUrl);
+                //console.log($scope.qrCodeUrl);
                 }, 2000);
             }
         }, function(response) { // optional
@@ -153,8 +146,8 @@ app.controller('systemCtrl', function($scope, $http, $firebaseArray, $firebaseOb
 
 });
 
-app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $location, $timeout,$http,API_BASE_URL) {
-    //$scope.apiURL ="https://dev.sttarter.com:3000/"
+app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $location, $timeout, $http, API_BASE_URL) {
+
 
     console.log($location.search());
     $scope.QRFlag = $location.search().flag;
@@ -186,11 +179,11 @@ app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $
     $scope.id = getParameterByName("id");
 
     /*With QRCode*/
-    if($scope.QRFlag){
+    if ($scope.QRFlag) {
         console.log($scope.user_Id);
         $http({
             method: 'GET',
-            url: API_BASE_URL + 'getuser?userId='+$scope.userId
+            url: API_BASE_URL + 'getuser?userId=' + $scope.userId
         }).then(function(response) {
             console.log(response);
             $scope.data = response.data.user;
@@ -210,40 +203,40 @@ app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $
         $scope.deviceChallengeBtn = true;
     }
 
-        $scope.showBtn = false;
-        $scope.PlayNow = function() {
-            $(".device-play").hide();
-            $scope.showBtn = true;
-        }
+    $scope.showBtn = false;
+    $scope.PlayNow = function() {
+        $(".device-play").hide();
+        $scope.showBtn = true;
+    }
 
-        $scope.arr = ["2,9,3,1,4,5,7,8,6", "4,1,2,9,5,3,7,8,6", "4,1,3,9,2,5,7,8,6", "1,2,3,7,4,6,5,9,8", "1,9,3,5,2,6,4,7,8"];
-        var pickAPayload = function() {
-            $scope.randOne = $scope.arr[Math.floor(Math.random() * $scope.arr.length)];
-            return $scope.randOne;
-        };
+    $scope.arr = ["2,9,3,1,4,5,7,8,6", "4,1,2,9,5,3,7,8,6", "4,1,3,9,2,5,7,8,6", "1,2,3,7,4,6,5,9,8", "1,9,3,5,2,6,4,7,8"];
+    var pickAPayload = function() {
+        $scope.randOne = $scope.arr[Math.floor(Math.random() * $scope.arr.length)];
+        return $scope.randOne;
+    };
 
-        $scope.obj = {};
-        $scope.createUser = function(id) {
-            $scope.obj.userId = id;
-            $scope.obj.payload = pickAPayload();
-            $scope.obj.move = "";
-            $http({
-                method: 'POST',
-                url: API_BASE_URL +'userSignup',
-                data: $scope.obj
-            }).then(function(response) {
-                console.log(response.data);
-                console.log(response.status);
-                if (response.status == 200) {
-                    console.log(response);
-                    $scope.data = response.data.user;
-                    $scope.data.src = "img/desktop/puzzle_820.png";
+    $scope.obj = {};
+    $scope.createUser = function(id) {
+        $scope.obj.userId = id;
+        $scope.obj.payload = pickAPayload();
+        $scope.obj.move = "";
+        $http({
+            method: 'POST',
+            url: API_BASE_URL + 'userSignup',
+            data: $scope.obj
+        }).then(function(response) {
+            console.log(response.data);
+            console.log(response.status);
+            if (response.status == 200) {
+                console.log(response);
+                $scope.data = response.data.user;
+                $scope.data.src = "img/desktop/puzzle_820.png";
 
-                }
-            }, function(response) { // optional
-                console.log(response)
-            });
-        };
+            }
+        }, function(response) { // optional
+            console.log(response)
+        });
+    };
 
 
 
