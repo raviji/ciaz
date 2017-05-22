@@ -1,4 +1,12 @@
 <div ng-controller="deviceCtrl" class="container">
+
+    <div ng-repeat="message in messages">
+        <strong>{{message.user.name}}:</strong>
+        <span>{{message.data}}</span>
+    </div>
+    <form ng-submit="send()">
+        <input ng-model="textbox" type="text">
+    </form>
     <div ng-show="QRFlag">
         <!-- <div class="device-challenge">
             <a ng-click="deviceChallenge()"><img src="img/mobile/btn_play_now.png" title="Button"></a>

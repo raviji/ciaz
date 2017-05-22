@@ -1,5 +1,13 @@
 <div ng-controller="systemCtrl" class="container-fluid">
     <div id="fb-root"></div>
+
+    <div ng-repeat="message in messages">
+        <strong>{{message.user.name}}:</strong>
+        <span>{{message.data}}</span>
+    </div>
+    <form ng-submit="send(textbox)">
+        <input ng-model="textbox" type="text">
+    </form>
     <!--<button type="button" ng-click="login()" ng-hide="isLoggedIn" class="btn btn-default navbar-btn">
                  Login
              </button>-->
