@@ -13,6 +13,7 @@
             <a href="#" ng-click="playNowSystem()"><img src="img/desktop/btn_challenge.png" title="Button"></a>
         </div>
 
+
         <div class="" ng-if="challengeStarted">
 
             <!--<div class="status">
@@ -49,6 +50,7 @@
                 </table>
             </div>
         </div>
+        {{puzzle.api.isSolved()}}
 
         <div ng-if="puzzle.api.isSolved()">
 

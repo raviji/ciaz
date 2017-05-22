@@ -80,7 +80,7 @@ app.controller('systemCtrl', function($scope, $http, $firebaseArray, $firebaseOb
 
 
 
-    $scope.server = "http://10.10.0.33/";
+    $scope.server = "http://10.10.1.183/ciaz/app/";
     $scope.isLoggedIn = false;
     $scope.loadgame = false;
     $scope.puzzle = {};
@@ -150,7 +150,8 @@ app.controller('systemCtrl', function($scope, $http, $firebaseArray, $firebaseOb
                     $('.challange_dt').hide();
                     $('.make_qrcode').show();
                     $scope.fakeDelay = true;
-                    $scope.qrCodeUrl = $scope.server + "#!/device?&user_Id=" + response.data.userId + "&flag=true";
+                    $scope.qrCodeUrl = $scope.server + "#!/device?&userId=" + response.data.user.userId + "&flag=true";
+                    console.log($scope.qrCodeUrl);
                 }, 2000);
             }
         }, function(response) { // optional
@@ -171,14 +172,7 @@ app.controller('systemCtrl', function($scope, $http, $firebaseArray, $firebaseOb
 
 });
 
-app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $location, $timeout, playSer) {
-
-    var mySubscriber = function(msg, data) {
-        console.log(msg, data);
-    };
-    var token = PubSub.subscribe('MY TOPIC', mySubscriber);
-    //PubSub.publish('MY TOPIC', 'test');
-    PubSub.publishSync('MY TOPIC', 'testadfad adfasdf');
+app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $location, $timeout, playSer,$http) {
 
 
     console.log($location.search());
@@ -186,7 +180,6 @@ app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $
     console.log($scope.QRFlag);
     if ($scope.QRFlag == undefined) {
         $scope.QRFlag = false;
-
     }
     $('.device-play').hide();
 
@@ -202,22 +195,84 @@ app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $
     }
 
 
-    $scope.showBtn = false;
-    $scope.PlayNow = function() {
-        $(".device-play").hide();
-        $scope.showBtn = true;
-    }
-    $scope.QRPlayNow = function() {
 
+    $scope.QRPlayNow = function() {
         //$scope.addUser.playFlag = false;
         $(".device-qrlandingPage").hide();
         $scope.showBtn = true;
     }
-    $scope.user_Id = getParameterByName("user_Id");
+    $scope.userId = getParameterByName("userId");
     $scope.id = getParameterByName("id");
 
+    /*With QRCode*/
+    if($scope.QRFlag){
+        console.log($scope.user_Id);
+        $http({
+            method: 'GET',
+            url: 'http://10.10.1.158:3000/getuser?userId='+$scope.userId
+        }).then(function(response) {
+            console.log(response);
+            $scope.data = response.data.user;
+            $scope.data.src = "img/desktop/puzzle_820.png";
 
-    if ($scope.user_Id != undefined && $scope.id != undefined) {
+        }, function(response) { // optional
+            console.log(response)
+        });
+    }
+
+    /*Without QRCode*/
+    $scope.deviceChallengeBtn = false
+    $scope.deviceChallenge = function() {
+        $scope.createUser("56");
+        $(".device-challenge").hide();
+        $(".device-play").show();
+        $scope.deviceChallengeBtn = true;
+    }
+
+        $scope.showBtn = false;
+        $scope.PlayNow = function() {
+            $(".device-play").hide();
+            $scope.showBtn = true;
+        }
+
+        $scope.arr = ["2,9,3,1,4,5,7,8,6", "4,1,2,9,5,3,7,8,6", "4,1,3,9,2,5,7,8,6", "1,2,3,7,4,6,5,9,8", "1,9,3,5,2,6,4,7,8"];
+        var pickAPayload = function() {
+            $scope.randOne = $scope.arr[Math.floor(Math.random() * $scope.arr.length)];
+            return $scope.randOne;
+        };
+
+        $scope.obj = {};
+        $scope.createUser = function(id) {
+            $scope.obj.userId = id;
+            $scope.obj.payload = pickAPayload();
+            $scope.obj.move = "";
+            $http({
+                method: 'POST',
+                url: 'http://10.10.1.158:3000/userSignup',
+                data: $scope.obj
+            }).then(function(response) {
+                console.log(response.data);
+                console.log(response.status);
+                if (response.status == 200) {
+                    console.log(response);
+                    $scope.data = response.data.user;
+                    $scope.data.src = "img/desktop/puzzle_820.png";
+
+                }
+            }, function(response) { // optional
+                console.log(response)
+            });
+        };
+
+
+
+
+
+
+
+
+
+    /*if ($scope.user_Id != undefined && $scope.id != undefined) {
         $scope.url = "puzzle/" + $scope.id;
         var ref = firebase.database().ref($scope.url);
         var obj = $firebaseObject(ref);
@@ -253,19 +308,7 @@ app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $
             $('.device.sliding-puzzle td ').height(fh + "px");
         }, 2000);
     }
-    ;
-    $(".qrcodePuzzle").on('click', function() {
-        $scope.tempVal = $(".qrcodePuzzle").attr('movement');
-        console.log($(".qrcodePuzzle").attr('movement'));
-        console.log($(".qrcodePuzzle").attr('api'));
-        $scope.isPuzzleTrue = false;
-        if ($scope.tempVal == "2,2") {
-            console.log("true");
-            $timeout(function() {
-                $scope.isPuzzleTrue = true;
-            }, 1000)
+    ;*/
 
-        }
-    });
 
 });
