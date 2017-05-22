@@ -1,13 +1,5 @@
 <div ng-controller="systemCtrl" class="container-fluid">
     <div id="fb-root"></div>
-
-    <div ng-repeat="message in messages">
-        <strong>{{message.user.name}}:</strong>
-        <span>{{message.data}}</span>
-    </div>
-    <form ng-submit="send(textbox)">
-        <input ng-model="textbox" type="text">
-    </form>
     <!--<button type="button" ng-click="login()" ng-hide="isLoggedIn" class="btn btn-default navbar-btn">
                  Login
              </button>-->
@@ -16,24 +8,21 @@
             <img src="img/desktop/challange_820.png">
             <a ng-click="challenge()"><img src="img/desktop/btn_challenge.png" title="Button"></a>
         </div>
-        {{data}}
         <div class="make_qrcode">
             <qr text="qrCodeUrl" ng-if="fakeDelay"></qr>
             <a href="#" ng-click="playNowSystem()"><img src="img/desktop/btn_challenge.png" title="Button"></a>
         </div>
 
-
         <div class="" ng-if="challengeStarted">
-
 
             <!--<div class="status">
                              moves: <strong>{{puzzle.api.moves}}</strong><br/> solved: <strong>{{puzzle.api.isSolved() }}</strong>
- 
+
                          </div>
                          <button ng-click="puzzle.api.solve()">solve</button>
                          <button ng-click="onYouTubeIframeAPIReady()">solve</button>-->
 
-            <div ng-if="!puzzle.api.isSolved()">
+            <div ng-show="!puzzle.api.isSolved()">
                 <sliding-puzzle class="system qrcodePuzzle" ng-if="data.userId" dbid="{{data.userId}}" api="puzzle.api" size="3x3" movement="{{data.move}}" src="{{data.src}}" payload="{{data.payload}}"></sliding-puzzle>
 
                 <table>

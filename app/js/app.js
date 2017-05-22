@@ -1,16 +1,6 @@
 'use strict';
 
-var app = angular.module('puzzleApp', ['slidingPuzzle', 'firebase', 'ngRoute', 'swipe', 'ui.router', 'timer', 'ja.qr', 'ngFacebook', 'chat']);
-
-app.constant('config', {
-    rltm: {
-        service: "pubnub",
-        config: {
-            publishKey: "pub-c-086c744d-3863-4670-8709-e59df284ba30",
-            subscribeKey: "sub-c-2da7a326-3ec6-11e7-a3a3-0619f8945a4f"
-        }
-    }
-});
+var app = angular.module('puzzleApp', ['slidingPuzzle', 'firebase', 'ngRoute', 'swipe', 'ui.router', 'timer', 'ja.qr', 'ngFacebook']);
 
 app.config(function($routeProvider, $stateProvider, $urlRouterProvider) {
 
@@ -85,43 +75,7 @@ app.factory('playSer', function() {
     };
 });
 
-app.controller('systemCtrl', function(Messages, $scope, $http, $firebaseArray, $firebaseObject, slidingPuzzle, $timeout, $window, $facebook, $location, playSer) {
-
-    // Message Inbox
-    $scope.chats = {};
-    Messages.user({
-        id: "support-agent",
-        name: "Support Agent"
-    });
-    // Receive Messages
-    Messages.receive(function(message, isPrivate) {
-        console.log(message, isPrivate)
-        // isPrivate is always true
-        // create a new chat if doesn't exist
-        if (!$scope.chats[message.user.id]) {
-            $scope.chats[message.user.id] = {
-                user: message.user,
-                messages: []
-            };
-        }
-
-        // add messages to the chat
-        $scope.chats[message.user.id].messages.push(message);
-    });
-    // Send Messages
-    $scope.send = function(text) {
-
-        var message = {
-            to: 'support-agent',
-            data: text,
-            user: Messages.user()
-        };
-        Messages.send(message);
-        // because we are sending a message to a user's personal channel,
-        // but not subscribing to it we need to keep track of sent messages 
-        // ourselves
-        $scope.chats['support-agent'].messages.push(message);
-    };
+app.controller('systemCtrl', function($scope, $http, $firebaseArray, $firebaseObject, slidingPuzzle, $timeout, $window, $facebook, $location, playSer) {
 
 
 
@@ -139,26 +93,30 @@ app.controller('systemCtrl', function(Messages, $scope, $http, $firebaseArray, $
     $scope.challenge = function() {
         $scope.createUser("56");
         $scope.fakeDelay = false;
-    /* $facebook.login().then(function() {
+        /* $facebook.login().then(function() {
          refresh();
-     });
-     */
+         });
+         $timeout(function() {
+         $('.challange_dt').hide();
+         $('.make_qrcode').show();
+         $scope.fakeDelay = true;
+         }, 2000);*/
     }
 
     /*function refresh() {
-        $facebook.api("/me").then(function(response) {
-            //console.log(response.id);
-            $scope.checkExistUser(response.id);
-            $scope.user_Id = response.id;
-            $scope.isLoggedIn = true;
-        });
-    }
-    ;
-    refresh();
-    $timeout(function() {
-        $scope.fakeDelay = false;
-    }, 1000);
-    */
+     $facebook.api("/me").then(function(response) {
+     //console.log(response.id);
+     $scope.checkExistUser(response.id);
+     $scope.user_Id = response.id;
+     $scope.isLoggedIn = true;
+     });
+     }
+     ;
+     refresh();
+     $timeout(function() {
+     $scope.fakeDelay = false;
+     }, 1000);
+     */
 
 
     $scope.arr = ["2,9,3,1,4,5,7,8,6", "4,1,2,9,5,3,7,8,6", "4,1,3,9,2,5,7,8,6", "1,2,3,7,4,6,5,9,8", "1,9,3,5,2,6,4,7,8"];
@@ -186,7 +144,7 @@ app.controller('systemCtrl', function(Messages, $scope, $http, $firebaseArray, $
             console.log(response.data);
             console.log(response.status);
             if (response.status == 200) {
-                $scope.data = response.data;
+                $scope.data = response.data.user;
                 $scope.data.src = "img/desktop/puzzle_820.png";
                 $timeout(function() {
                     $('.challange_dt').hide();
@@ -213,48 +171,14 @@ app.controller('systemCtrl', function(Messages, $scope, $http, $firebaseArray, $
 
 });
 
-app.controller('deviceCtrl', function(Messages, $scope, $firebaseArray, $firebaseObject, $location, $timeout, playSer) {
+app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $location, $timeout, playSer) {
 
-    // Message Inbox
-    $scope.chats = {};
-    Messages.user({
-        id: "support-agent",
-        name: "Support Agent"
-    });
-    // Receive Messages
-    Messages.receive(function(message, isPrivate) {
-        console.log(message, isPrivate)
-        // isPrivate is always true
-        // create a new chat if doesn't exist
-        if (!$scope.chats[message.user.id]) {
-            $scope.chats[message.user.id] = {
-                user: message.user,
-                messages: []
-            };
-        }
-
-        // add messages to the chat
-        $scope.chats[message.user.id].messages.push(message);
-    });
-    // Send Messages
-    $scope.send = function(text) {
-
-        var message = {
-            to: 'support-agent',
-            data: text,
-            user: Messages.user()
-        };
-        Messages.send(message);
-        // because we are sending a message to a user's personal channel,
-        // but not subscribing to it we need to keep track of sent messages 
-        // ourselves
-        $scope.chats['support-agent'].messages.push(message);
+    var mySubscriber = function(msg, data) {
+        console.log(msg, data);
     };
-
-
-
-
-
+    var token = PubSub.subscribe('MY TOPIC', mySubscriber);
+    //PubSub.publish('MY TOPIC', 'test');
+    PubSub.publishSync('MY TOPIC', 'testadfad adfasdf');
 
 
     console.log($location.search());
