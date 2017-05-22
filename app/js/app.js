@@ -1,6 +1,6 @@
 'use strict';
 
-var app = angular.module('puzzleApp', ['slidingPuzzle', 'firebase', 'ngRoute', 'swipe', 'ui.router', 'timer', 'ja.qr', 'ngFacebook']);
+var app = angular.module('puzzleApp', ['slidingPuzzle', 'firebase', 'ngRoute', 'swipe', 'ui.router', 'timer', 'ja.qr', 'ngFacebook', 'gr.PubSub']);
 
 app.config(function($routeProvider, $stateProvider, $urlRouterProvider) {
 
@@ -34,6 +34,12 @@ app.config(function($facebookProvider) {
 })
 
 app.run(function($rootScope) {
+    // var PubSub = {},
+    //     messages = {},
+    //     lastUid = -1;
+    $rootScope.PubSub = {};
+    $rootScope.messages = {};
+    $rootScope.lastUid = -1;
     // Load the facebook SDK asynchronously
     (function() {
         // If we've already installed the SDK, we're done
@@ -56,28 +62,22 @@ app.run(function($rootScope) {
     }());
 });
 
-app.factory('playSer', function() {
 
-    // private
-    var value = 0;
-
-    // public
-    return {
-
-        getValue: function() {
-            return value;
-        },
-
-        setValue: function(val) {
-            value = val;
-        }
-
+app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, slidingPuzzle, $timeout, $window, $facebook, $location, PubSub) {
+    console.log("subscribe created");
+    // create a function to subscribe to topics
+    var mySubscriber = function(msg, data) {
+        console.log(msg, data);
+        $scope.publishData = data;
     };
-});
 
-app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, slidingPuzzle, $timeout, $window, $facebook, $location, playSer) {
+    // add the function to the list of subscribers for a particular topic
+    // we're keeping the returned token, in order to be able to unsubscribe
+    // from the topic later on
+    var token = PubSub.subscribe('event-name', mySubscriber);
 
-    $scope.server = "https://maruthiciaz.playbaddy.com/";
+    $scope.server = "https://10.10.0.33/";
+    //$scope.server = "https://maruthiciaz.playbaddy.com/";
     $scope.isLoggedIn = false;
     $scope.loadgame = false;
     $scope.puzzle = {};
@@ -86,9 +86,11 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
     $('.make_qrcode').hide();
 
     $scope.challenge = function() {
-        $facebook.login().then(function() {
+        /*$facebook.login().then(function() {
             refresh();
-        });
+        });*/
+        var id = "222333";
+        $scope.checkExistUser(id);
         $timeout(function() {
             $('.challange_dt').hide();
             $('.make_qrcode').show();
@@ -96,15 +98,17 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
         }, 2000);
     }
 
-    function refresh() {
-        $facebook.api("/me").then(function(response) {
-            //console.log(response.id);
-            $scope.checkExistUser(response.id);
-            $scope.user_Id = response.id;
-            $scope.isLoggedIn = true;
-        });
-    };
-    refresh();
+    /*function refresh() {
+
+         $facebook.api("/me").then(function(response) {
+             //console.log(response.id);
+             $scope.checkExistUser(response.id);
+             $scope.user_Id = response.id;
+             $scope.isLoggedIn = true;
+         });
+    }
+
+    refresh();*/
     $timeout(function() {
         $scope.fakeDelay = false;
     }, 1000);
@@ -183,12 +187,7 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
 
     /*QR code Challenge button functionlity*/
 
-    $scope.value = playSer.getValue();
-    console.log("out: " + $scope.value)
-    $scope.$on('increment-value-event', function() {
-        $scope.value = playSer.getValue();
-        console.log("in: " + $scope.value)
-    });
+
 
     $scope.challengeStarted = false;
     $scope.playNowSystem = function() {
@@ -200,13 +199,32 @@ app.controller('systemCtrl', function($scope, $firebaseArray, $firebaseObject, s
 
 });
 
-app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $location, $timeout, playSer) {
+app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $location, $timeout, PubSub) {
+    console.log("before publish");
+    PubSub.publish('event-name', "test");
+    // PubSub.publish('MY TOPIC', 'hello world!');
 
 
 
-    console.log($location.search());
+    // add the function to the list of subscribers for a particular topic
+    // we're keeping the returned token, in order to be able to unsubscribe
+    // from the topic later on
+    //var token = PubSub.subscribe('MYTOPIC', mySubscriber);
+
+    // publish a topic asyncronously
+    //console.log("Publishing value");
+    //PubSub.publish('MYTOPIC', '2,1');
+
+    // publish a topic syncronously, which is faster in some environments,
+    // but will get confusing when one topic triggers new topics in the
+    // same execution chain
+    // USE WITH CAUTION, HERE BE DRAGONS!!!
+    //PubSub.publishSync('MYTOPIC', 'hello world!');
+
+
+    //console.log($location.search());
     $scope.QRFlag = $location.search().flag;
-    console.log($scope.QRFlag);
+    // console.log($scope.QRFlag);
     if ($scope.QRFlag == undefined) {
         $scope.QRFlag = false;
 
@@ -275,7 +293,8 @@ app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $
         setTimeout(function() {
             $('.device.sliding-puzzle td ').height(fh + "px");
         }, 2000);
-    };
+    }
+    ;
     $(".qrcodePuzzle").on('click', function() {
         $scope.tempVal = $(".qrcodePuzzle").attr('movement');
         console.log($(".qrcodePuzzle").attr('movement'));
