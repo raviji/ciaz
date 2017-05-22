@@ -1,6 +1,7 @@
 'use strict';
-
-var app = angular.module('puzzleApp', ['slidingPuzzle', 'firebase', 'ngRoute', 'swipe', 'ui.router', 'timer', 'ja.qr', 'ngFacebook']);
+var config_module = angular.module('CIAZ_API_URL.config', [])
+    .constant('API_BASE_URL', 'https://dev.sttarter.com:3000/');
+var app = angular.module('puzzleApp', ['slidingPuzzle', 'firebase', 'ngRoute', 'swipe', 'ui.router', 'timer', 'ja.qr', 'ngFacebook','CIAZ_API_URL.config']);
 
 app.config(function($routeProvider, $stateProvider, $urlRouterProvider) {
 
@@ -56,30 +57,9 @@ app.run(function($rootScope) {
     }());
 });
 
-app.factory('playSer', function() {
 
-    // private
-    var value = 0;
-
-    // public
-    return {
-
-        getValue: function() {
-            return value;
-        },
-
-        setValue: function(val) {
-            value = val;
-        }
-
-    };
-});
-
-app.controller('systemCtrl', function($scope, $http, $firebaseArray, $firebaseObject, slidingPuzzle, $timeout, $window, $facebook, $location, playSer) {
-
-
-
-
+app.controller('systemCtrl', function($scope, $http, $firebaseArray, $firebaseObject, slidingPuzzle, $timeout, $window, $facebook, $location,API_BASE_URL) {
+    //$scope.apiURL ="https://dev.sttarter.com:3000/";
     $scope.server = "http://10.10.1.183/ciaz/app/";
     $scope.isLoggedIn = false;
     $scope.loadgame = false;
@@ -88,7 +68,7 @@ app.controller('systemCtrl', function($scope, $http, $firebaseArray, $firebaseOb
 
     $('.make_qrcode').hide();
 
-
+    console.log(API_BASE_URL);
 
     $scope.challenge = function() {
         $scope.createUser("56");
@@ -136,9 +116,10 @@ app.controller('systemCtrl', function($scope, $http, $firebaseArray, $firebaseOb
         $scope.obj.userId = id;
         $scope.obj.payload = pickAPayload();
         $scope.obj.move = "";
+        console.log($scope.obj);
         $http({
             method: 'POST',
-            url: 'http://10.10.1.158:3000/userSignup',
+            url:  API_BASE_URL +'userSignup',
             data: $scope.obj
         }).then(function(response) {
             console.log(response.data);
@@ -172,8 +153,8 @@ app.controller('systemCtrl', function($scope, $http, $firebaseArray, $firebaseOb
 
 });
 
-app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $location, $timeout, playSer,$http) {
-
+app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $location, $timeout,$http,API_BASE_URL) {
+    //$scope.apiURL ="https://dev.sttarter.com:3000/"
 
     console.log($location.search());
     $scope.QRFlag = $location.search().flag;
@@ -209,7 +190,7 @@ app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $
         console.log($scope.user_Id);
         $http({
             method: 'GET',
-            url: 'http://10.10.1.158:3000/getuser?userId='+$scope.userId
+            url: API_BASE_URL + 'getuser?userId='+$scope.userId
         }).then(function(response) {
             console.log(response);
             $scope.data = response.data.user;
@@ -248,7 +229,7 @@ app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $
             $scope.obj.move = "";
             $http({
                 method: 'POST',
-                url: 'http://10.10.1.158:3000/userSignup',
+                url: API_BASE_URL +'userSignup',
                 data: $scope.obj
             }).then(function(response) {
                 console.log(response.data);
