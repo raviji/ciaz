@@ -1,8 +1,6 @@
 'use strict';
-var config_module = angular.module('CIAZ_API_URL.config', [])
-    .constant('API_BASE_URL', 'https://dev.sttarter.com:3000/');
-//, 'adamgoose.webdis'
-var app = angular.module('puzzleApp', ['slidingPuzzle', 'ngRoute', 'swipe', 'ui.router', 'timer', 'ja.qr', 'ngFacebook', 'CIAZ_API_URL.config', 'adamgoose.webdis']);
+
+var app = angular.module('puzzleApp', ['slidingPuzzle', 'ngRoute', 'swipe', 'ui.router', 'timer', 'ja.qr', 'ngFacebook', 'adamgoose.webdis', 'config.api']);
 
 app.config(function($routeProvider, $stateProvider, $urlRouterProvider) {
 
@@ -62,9 +60,8 @@ app.config(['WebdisProvider', function(WebdisProvider) {
     WebdisProvider.setPort(7379);
 }]);
 
-app.controller('systemCtrl', function($scope, $http, slidingPuzzle, $timeout, $window, $facebook, $location, API_BASE_URL, Webdis) {
+app.controller('systemCtrl', function($scope, $http, slidingPuzzle, $timeout, $window, $facebook, $location, apiUrl, qrCodeUrl, Webdis) {
 
-    $scope.server = "https://dev.sttarter.com/ciaz/";
     $scope.isLoggedIn = false;
     $scope.loadgame = false;
     $scope.puzzle = {};
@@ -72,7 +69,7 @@ app.controller('systemCtrl', function($scope, $http, slidingPuzzle, $timeout, $w
 
     $('.make_qrcode').hide();
 
-    //console.log(API_BASE_URL);
+    //console.log(apiUrl);
     $timeout(function() {
         $scope.fakeDelay = false;
     }, 1000);
@@ -128,7 +125,7 @@ app.controller('systemCtrl', function($scope, $http, slidingPuzzle, $timeout, $w
         //console.log($scope.obj);
         $http({
             method: 'POST',
-            url: API_BASE_URL + 'userSignup',
+            url: apiUrl + 'userSignup',
             data: $scope.obj
         }).then(function(response) {
             //console.log(response.data);
@@ -140,7 +137,7 @@ app.controller('systemCtrl', function($scope, $http, slidingPuzzle, $timeout, $w
                     $('.challange_dt').hide();
                     $('.make_qrcode').show();
                     $scope.fakeDelay = true;
-                    $scope.qrCodeUrl = $scope.server + "#!/device?&userId=" + response.data.user.userId + "&flag=true";
+                    $scope.qrCodeUrl = qrCodeUrl + "#!/device?&userId=" + response.data.user.userId + "&flag=true";
                     //console.log($scope.qrCodeUrl);
                 }, 2000);
             }
@@ -159,7 +156,7 @@ app.controller('systemCtrl', function($scope, $http, slidingPuzzle, $timeout, $w
 
 });
 
-app.controller('deviceCtrl', function($scope, $location, $timeout, $http, API_BASE_URL, Webdis) {
+app.controller('deviceCtrl', function($scope, $location, $timeout, $http, apiUrl, Webdis) {
 
     function getParameterByName(name, url) {
         if (!url)
@@ -221,7 +218,7 @@ app.controller('deviceCtrl', function($scope, $location, $timeout, $http, API_BA
     if ($scope.QRFlag) {
         $http({
             method: 'GET',
-            url: API_BASE_URL + 'getuser?userId=' + $scope.userId
+            url: apiUrl + 'getuser?userId=' + $scope.userId
         }).then(function(response) {
             console.log(response);
             $scope.data = response.data.user;
@@ -260,7 +257,7 @@ app.controller('deviceCtrl', function($scope, $location, $timeout, $http, API_BA
         $scope.obj.move = "";
         $http({
             method: 'POST',
-            url: API_BASE_URL + 'userSignup',
+            url: apiUrl + 'userSignup',
             data: $scope.obj
         }).then(function(response) {
             console.log(response.data);
@@ -275,52 +272,5 @@ app.controller('deviceCtrl', function($scope, $location, $timeout, $http, API_BA
             console.log(response)
         });
     };
-
-
-
-
-
-
-
-
-
-    /*if ($scope.user_Id != undefined && $scope.id != undefined) {
-        $scope.url = "puzzle/" + $scope.id;
-        var ref = firebase.database().ref($scope.url);
-        var obj = $firebaseObject(ref);
-        obj.$loaded().then(function() {
-            //console.log(obj);
-            //$scope.test = true;
-            $scope.puzzle.payload = obj.payload;
-            $scope.puzzle.src = obj.src;
-            $scope.puzzle.title = obj.title;
-            $scope.puzzle.rows = obj.rows;
-            $scope.puzzle.cols = obj.cols;
-            $scope.puzzle.move = obj.moves;
-        });
-        obj.$bindTo($scope, "data");
-
-        var h = $(window).height() - 20;
-        var fh = h / 3;
-
-        $scope.deviceChallenge = function() {
-            $(".device-challenge").hide();
-            $(".device-play").show();
-        }
-        $scope.qrCodePlayNow = function() {
-            $scope.value = 1;
-            playSer.setValue($scope.value);
-            $rootScope.$broadcast('increment-value-event');
-            $(".device-play").hide();
-            $scope.showBtn = true;
-
-        }
-
-        setTimeout(function() {
-            $('.device.sliding-puzzle td ').height(fh + "px");
-        }, 2000);
-    }
-    ;*/
-
 
 });

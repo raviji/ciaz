@@ -1,12 +1,12 @@
 (function(angular) {
     'use strict';
 
-    var module = angular.module('slidingPuzzle', []);
+    var module = angular.module('slidingPuzzle', ['config.api']);
 
     /**
      * Service
      */
-    module.factory('slidingPuzzle', function($filter, $http, $window) {
+    module.factory('slidingPuzzle', function($filter, $http, $window, pubsubUrl) {
         function SlidingPuzzle(rows, cols) {
             /**
              * Puzzle grid
@@ -35,7 +35,7 @@
                 if (this.dbid != undefined) {
                     if (srow != NaN && scol != NaN) {
                         var move = srow + "," + scol + "";
-                        $http.get("http://35.154.80.39:7379/PUBLISH/" + this.dbid + "/" + move, null).then(function(data) {
+                        $http.get(pubsubUrl + this.dbid + "/" + move, null).then(function(data) {
                             //$scope.value = data;
                         }, function(err) {
                             console.log(err)
