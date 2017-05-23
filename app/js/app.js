@@ -64,10 +64,6 @@ app.config(['WebdisProvider', function(WebdisProvider) {
 
 app.controller('systemCtrl', function($scope, $http, slidingPuzzle, $timeout, $window, $facebook, $location, API_BASE_URL, Webdis) {
 
-
-
-
-
     $scope.server = "https://dev.sttarter.com/ciaz/";
     $scope.isLoggedIn = false;
     $scope.loadgame = false;
@@ -83,9 +79,9 @@ app.controller('systemCtrl', function($scope, $http, slidingPuzzle, $timeout, $w
 
     //For Local
     $scope.challenge = function() {
-        $scope.createUser("56");
+        $scope.createUser("10154820261779480");
 
-        Webdis.subscribe("56", function(data, channel) {
+        Webdis.subscribe("10154820261779480", function(data, channel) {
             console.log('From system ' + channel + ': ' + data);
             $scope.moveVal = data;
         }, $scope);
@@ -145,7 +141,7 @@ app.controller('systemCtrl', function($scope, $http, slidingPuzzle, $timeout, $w
                     $('.make_qrcode').show();
                     $scope.fakeDelay = true;
                     $scope.qrCodeUrl = $scope.server + "#!/device?&userId=" + response.data.user.userId + "&flag=true";
-                //console.log($scope.qrCodeUrl);
+                    //console.log($scope.qrCodeUrl);
                 }, 2000);
             }
         }, function(response) { // optional
@@ -179,10 +175,7 @@ app.controller('deviceCtrl', function($scope, $location, $timeout, $http, API_BA
     $scope.userId = getParameterByName("userId");
     //console.log($scope.userId);
 
-    Webdis.subscribe($scope.userId, function(data, channel) {
-        console.log('From device ' + channel + ': ' + data);
-        $scope.moveVal = data;
-    }, $scope);
+
 
     /*$http.get("http://35.154.80.39:7379/PUBLISH/" + $scope.userId + "/" + "2,1").then(function(data) {
         //$scope.value = data;
@@ -201,9 +194,8 @@ app.controller('deviceCtrl', function($scope, $location, $timeout, $http, API_BA
 
 
 
-    console.log($location.search());
+
     $scope.QRFlag = $location.search().flag;
-    console.log($scope.QRFlag);
     if ($scope.QRFlag == undefined) {
         $scope.QRFlag = false;
     }
@@ -217,6 +209,10 @@ app.controller('deviceCtrl', function($scope, $location, $timeout, $http, API_BA
         //$scope.addUser.playFlag = false;
         $(".device-qrlandingPage").hide();
         $scope.showBtn = true;
+        Webdis.subscribe($scope.userId, function(data, channel) {
+            console.log('From device ' + channel + ': ' + data);
+            $scope.moveVal = data;
+        }, $scope);
     }
 
 

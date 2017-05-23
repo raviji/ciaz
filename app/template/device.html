@@ -41,7 +41,7 @@
         <button ng-click="puzzle.api.solve()">solve</button>-->
         <div ng-if="showBtn">
             <div ng-show="!puzzle.api.isSolved()">
-                <sliding-puzzle class="system" ng-if="data.userId" dbid="{{data.userId}}" api="puzzle.api" size="3x3" movement="{{data.move}}" src="{{data.src}}" payload="{{data.payload}}"></sliding-puzzle>
+                <sliding-puzzle class="system" ng-if="data.userId" dbid="{{data.userId}}" api="puzzle.api" size="3x3" movement="{{moveVal}}" src="{{data.src}}" payload="{{data.payload}}"></sliding-puzzle>
 
                 <table>
                     <tr>
