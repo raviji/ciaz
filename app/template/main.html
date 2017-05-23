@@ -25,7 +25,7 @@
                          <button ng-click="onYouTubeIframeAPIReady()">solve</button>-->
 
             <div ng-show="!puzzle.api.isSolved()">
-                <sliding-puzzle class="system qrcodePuzzle" ng-if="data.userId" dbid="{{data.userId}}" api="puzzle.api" size="3x3" movement="{{data.move}}" src="{{data.src}}" payload="{{data.payload}}"></sliding-puzzle>
+                <sliding-puzzle class="system qrcodePuzzle" ng-if="data.userId" dbid="{{data.userId}}" api="puzzle.api" size="3x3" movement="{{moveVal}}" src="{{data.src}}" payload="{{data.payload}}"></sliding-puzzle>
 
                 <table>
                     <tr>

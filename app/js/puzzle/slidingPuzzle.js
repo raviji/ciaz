@@ -6,7 +6,7 @@
     /**
      * Service
      */
-    module.factory('slidingPuzzle', function($filter, $firebaseObject, $window) {
+    module.factory('slidingPuzzle', function($filter, $http, $window) {
         function SlidingPuzzle(rows, cols) {
             /**
              * Puzzle grid
@@ -33,14 +33,12 @@
             this.move = function(srow, scol) {
 
                 if (this.dbid != undefined) {
-                    var ref = firebase.database().ref('puzzle/' + this.dbid + '/moves');
-                    var obj = $firebaseObject(ref);
                     if (srow != NaN && scol != NaN) {
-                        obj.move = srow + "," + scol + "";
-                        obj.$save().then(function(ref) {
-                            //console.log("moved")
-                        }, function(error) {
-                            //console.log("Error:", error);
+                        var move = srow + "," + scol + "";
+                        $http.get("http://35.154.80.39:7379/PUBLISH/" + this.dbid + "/" + move, null).then(function(data) {
+                            //$scope.value = data;
+                        }, function(err) {
+                            console.log(err)
                         });
                     }
                 }
@@ -62,8 +60,8 @@
                         this.grid[trow][tcol] = tref;
                         var sref = this.grid[srow][scol];
                         this.moves++;
-                        // console.log(sref.id)
-                        // console.log(tref.id)
+                    // console.log(sref.id)
+                    // console.log(tref.id)
                     }
                 }
 
@@ -224,7 +222,7 @@
 
                     if (attrs.api) {
                         scope.api = scope.puzzle;
-                        //console.log(scope.api.grid)
+                    //console.log(scope.api.grid)
                     }
                     tile();
 
@@ -251,7 +249,7 @@
                         scope.puzzle.LoadPayload(scope.payload);
                         scope.puzzle.getFBid(scope.dbid);
                     }
-                    //scope.puzzle.moveImage(scope.movement);
+                //scope.puzzle.moveImage(scope.movement);
                 }
 
                 scope.$watch('movement', function(movement) {

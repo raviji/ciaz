@@ -16,7 +16,7 @@
     this.callbacks = {};
     this.scopes = {};
     this.init = function(host, port) {
-      this.socket = new WebSocket('ws://' + host + ':' + port + '/0');
+      this.socket = new WebSocket('ws://' + host + ':' + port + '/.json');
       var me = this;
 
 

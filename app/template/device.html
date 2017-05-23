@@ -10,7 +10,7 @@
         </div>
         <div ng-show="showBtn">
             <div ng-show="!puzzle.api.isSolved()">
-                <sliding-puzzle dbid="{{data.userId}}" class="device qrcodePuzzle" api="puzzle.api" size="3x3" movement="{{data.move}}" src="{{data.src}}" payload="{{data.payload}}">
+                <sliding-puzzle dbid="{{data.userId}}" class="device qrcodePuzzle" api="puzzle.api" size="3x3" movement="{{moveVal}}" src="{{data.src}}" payload="{{data.payload}}">
                 </sliding-puzzle>
             </div>
 

@@ -1,7 +1,8 @@
 'use strict';
 var config_module = angular.module('CIAZ_API_URL.config', [])
     .constant('API_BASE_URL', 'https://dev.sttarter.com:3000/');
-var app = angular.module('puzzleApp', ['slidingPuzzle', 'firebase', 'ngRoute', 'swipe', 'ui.router', 'timer', 'ja.qr', 'ngFacebook', 'CIAZ_API_URL.config', 'adamgoose.webdis']);
+//, 'adamgoose.webdis'
+var app = angular.module('puzzleApp', ['slidingPuzzle', 'ngRoute', 'swipe', 'ui.router', 'timer', 'ja.qr', 'ngFacebook', 'CIAZ_API_URL.config', 'adamgoose.webdis']);
 
 app.config(function($routeProvider, $stateProvider, $urlRouterProvider) {
 
@@ -18,17 +19,17 @@ app.config(function($routeProvider, $stateProvider, $urlRouterProvider) {
         });
 });
 
-app.run(function($firebaseArray, $firebaseObject) {
-    var config = {
-        apiKey: "AIzaSyCllg0glgjSis7IUx-LzoLhiH8H6KJU7gM",
-        authDomain: "krds-ciaz.firebaseapp.com",
-        databaseURL: "https://krds-ciaz.firebaseio.com",
-        projectId: "krds-ciaz",
-        storageBucket: "krds-ciaz.appspot.com",
-        messagingSenderId: "799965870006"
-    };
-    var defaultApp = firebase.initializeApp(config);
-});
+// app.run(function($firebaseArray, $firebaseObject) {
+//     var config = {
+//         apiKey: "AIzaSyCllg0glgjSis7IUx-LzoLhiH8H6KJU7gM",
+//         authDomain: "krds-ciaz.firebaseapp.com",
+//         databaseURL: "https://krds-ciaz.firebaseio.com",
+//         projectId: "krds-ciaz",
+//         storageBucket: "krds-ciaz.appspot.com",
+//         messagingSenderId: "799965870006"
+//     };
+//     var defaultApp = firebase.initializeApp(config);
+// });
 
 app.config(function($facebookProvider) {
     $facebookProvider.setAppId('1457713207623290');
@@ -58,14 +59,12 @@ app.run(function($rootScope) {
 });
 app.config(['WebdisProvider', function(WebdisProvider) {
     WebdisProvider.setHost('35.154.80.39');
-    WebdisProvider.setPort(6379);
+    WebdisProvider.setPort(7379);
 }]);
 
-app.controller('systemCtrl', function($scope, $http, $firebaseArray, $firebaseObject, slidingPuzzle, $timeout, $window, $facebook, $location, API_BASE_URL, Webdis) {
+app.controller('systemCtrl', function($scope, $http, slidingPuzzle, $timeout, $window, $facebook, $location, API_BASE_URL, Webdis) {
 
-    // Webdis.subscribe('my-channel', function(data, channel) {
-    //     console.log('Message received on channel ' + channel + ': ' + data);
-    // }, $scope);
+
 
 
 
@@ -81,8 +80,21 @@ app.controller('systemCtrl', function($scope, $http, $firebaseArray, $firebaseOb
     $timeout(function() {
         $scope.fakeDelay = false;
     }, 1000);
+
+    //For Local
     $scope.challenge = function() {
-        // $scope.createUser("56");
+        $scope.createUser("56");
+
+        Webdis.subscribe("56", function(data, channel) {
+            console.log('From system ' + channel + ': ' + data);
+            $scope.moveVal = data;
+        }, $scope);
+        $scope.fakeDelay = false;
+    }
+
+
+    //For Facebook
+    /*$scope.challenge = function() {
         $scope.fakeDelay = false;
         $facebook.login().then(function() {
             $scope.refresh();
@@ -91,11 +103,14 @@ app.controller('systemCtrl', function($scope, $http, $firebaseArray, $firebaseOb
 
     $scope.refresh = function() {
         $facebook.api("/me").then(function(response) {
-            //console.log(response.id);
             $scope.createUser(response.id);
             $scope.isLoggedIn = true;
+            Webdis.subscribe(response.id, function(data, channel) {
+            console.log('From system ' + channel + ': ' + data);
+            $scope.moveVal = data;
+        }, $scope);
         });
-    };
+    };*/
 
 
 
@@ -106,10 +121,6 @@ app.controller('systemCtrl', function($scope, $http, $firebaseArray, $firebaseOb
         $scope.randOne = $scope.arr[Math.floor(Math.random() * $scope.arr.length)];
         return $scope.randOne;
     };
-
-    //Check User Exist
-
-
 
 
     /*-------------- Add and Get data to Database ---------*/
@@ -142,10 +153,7 @@ app.controller('systemCtrl', function($scope, $http, $firebaseArray, $firebaseOb
         });
     };
 
-
     /*QR code Challenge button functionlity*/
-
-
 
     $scope.challengeStarted = false;
     $scope.playNowSystem = function() {
@@ -155,16 +163,7 @@ app.controller('systemCtrl', function($scope, $http, $firebaseArray, $firebaseOb
 
 });
 
-app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $location, $timeout, $http, API_BASE_URL) {
-
-
-    console.log($location.search());
-    $scope.QRFlag = $location.search().flag;
-    console.log($scope.QRFlag);
-    if ($scope.QRFlag == undefined) {
-        $scope.QRFlag = false;
-    }
-    $('.device-play').hide();
+app.controller('deviceCtrl', function($scope, $location, $timeout, $http, API_BASE_URL, Webdis) {
 
     function getParameterByName(name, url) {
         if (!url)
@@ -177,6 +176,41 @@ app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $
         return decodeURIComponent(results[2].replace(/\+/g, " "));
     }
 
+    $scope.userId = getParameterByName("userId");
+    //console.log($scope.userId);
+
+    Webdis.subscribe($scope.userId, function(data, channel) {
+        console.log('From device ' + channel + ': ' + data);
+        $scope.moveVal = data;
+    }, $scope);
+
+    /*$http.get("http://35.154.80.39:7379/PUBLISH/" + $scope.userId + "/" + "2,1").then(function(data) {
+        //$scope.value = data;
+    }, function(err) {
+        console.log(err)
+    });*/
+
+
+    //Publish Topic
+    // $http.post('https://dev.sttarter.com:3000/publish').success(function(data) {
+    //     //$scope.value = data;
+    // }).error(function(err) {
+    //     console.log(err)
+    // });
+
+
+
+
+    console.log($location.search());
+    $scope.QRFlag = $location.search().flag;
+    console.log($scope.QRFlag);
+    if ($scope.QRFlag == undefined) {
+        $scope.QRFlag = false;
+    }
+    $('.device-play').hide();
+
+
+
 
 
     $scope.QRPlayNow = function() {
@@ -184,12 +218,11 @@ app.controller('deviceCtrl', function($scope, $firebaseArray, $firebaseObject, $
         $(".device-qrlandingPage").hide();
         $scope.showBtn = true;
     }
-    $scope.userId = getParameterByName("userId");
-    $scope.id = getParameterByName("id");
+
+
 
     /*With QRCode*/
     if ($scope.QRFlag) {
-        console.log($scope.user_Id);
         $http({
             method: 'GET',
             url: API_BASE_URL + 'getuser?userId=' + $scope.userId
