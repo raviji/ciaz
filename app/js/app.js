@@ -3,7 +3,7 @@
 var app = angular.module('puzzleApp', ['slidingPuzzle', 'ngRoute', 'swipe', 'ui.router', 'timer', 'ja.qr', 'ngFacebook', 'adamgoose.webdis', 'config.api']);
 
 app.config(function($routeProvider, $stateProvider, $urlRouterProvider) {
-
+    //https://dev.sttarter.com/ciaz/
     //$locationProvider.html5Mode(true).hashPrefix('*');
     $urlRouterProvider.otherwise('/');
     $stateProvider
@@ -99,9 +99,9 @@ app.controller('systemCtrl', function($scope, $http, slidingPuzzle, $timeout, $w
             $scope.createUser(response.id);
             $scope.isLoggedIn = true;
             Webdis.subscribe(response.id, function(data, channel) {
-            console.log('From system ' + channel + ': ' + data);
-            $scope.moveVal = data;
-        }, $scope);
+                console.log('From system ' + channel + ': ' + data);
+                $scope.moveVal = data;
+            }, $scope);
         });
     };*/
 
@@ -207,7 +207,7 @@ app.controller('deviceCtrl', function($scope, $location, $timeout, $http, apiUrl
         $(".device-qrlandingPage").hide();
         $scope.showBtn = true;
         Webdis.subscribe($scope.userId, function(data, channel) {
-            console.log('From device ' + channel + ': ' + data);
+            //console.log('From device ' + channel + ': ' + data);
             $scope.moveVal = data;
         }, $scope);
     }
@@ -220,12 +220,12 @@ app.controller('deviceCtrl', function($scope, $location, $timeout, $http, apiUrl
             method: 'GET',
             url: apiUrl + 'getuser?userId=' + $scope.userId
         }).then(function(response) {
-            console.log(response);
+            //console.log(response);
             $scope.data = response.data.user;
             $scope.data.src = "img/desktop/puzzle_820.png";
 
         }, function(response) { // optional
-            console.log(response)
+            //console.log(response)
         });
     }
 
